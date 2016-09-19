@@ -7,9 +7,10 @@
 
 #include <string>
 #include <vector>
-#include "voyage.h"
-#include "station.h"
-#include "auxiliaires.h"
+
+#include "Auxiliaires.h"
+#include "Station.h"
+#include "Voyage.h"
 
 /*!
  * \enum CategorieBus

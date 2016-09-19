@@ -8,9 +8,11 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "coordonnees.h"
-#include "ligne.h"
-#include "voyage.h"
+#include <stdlib.h>
+
+#include "Coordonnees.h"
+#include "Ligne.h"
+#include "Voyage.h"
 
 class Voyage;
 class Ligne;

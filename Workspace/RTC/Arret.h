@@ -8,7 +8,7 @@
 #ifndef RTC_ARRET_H
 #define RTC_ARRET_H
 
-#include "auxiliaires.h"
+#include "Auxiliaires.h"
 
 /*!
  * \class Arret

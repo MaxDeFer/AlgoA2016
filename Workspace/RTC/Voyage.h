@@ -6,10 +6,10 @@
 #define RTC_VOYAGE_H
 
 #include <string>
-#include "arret.h"
-#include "ligne.h"
-#include "station.h"
-#include "auxiliaires.h"
+#include "Arret.h"
+#include "Auxiliaires.h"
+#include "Ligne.h"
+#include "Station.h"
 
 class Ligne;
 class Station;

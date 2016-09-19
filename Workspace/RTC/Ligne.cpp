@@ -1,3 +1,5 @@
+#include "Ligne.h"
+
 Ligne::Ligne(const std::vector<std::string>& ligne_gtfs) {
 }
 

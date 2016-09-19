@@ -1,3 +1,5 @@
+#include "Arret.h"
+
 Arret::Arret(const std::vector<std::string>& ligne_gtfs) {
 }
 

@@ -6,7 +6,6 @@
  */
 
 #include <string>
-#include <sstream>
 #include "Coordonnees.h"
 
 Coordonnees::Coordonnees(double latitude, double longitude)
