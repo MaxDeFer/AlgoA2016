@@ -5,7 +5,8 @@
  *      Author: etudiant
  */
 
-#include <string>
+
+
 #include "Coordonnees.h"
 
 Coordonnees::Coordonnees(double latitude, double longitude)
@@ -38,5 +39,22 @@ void Coordonnees::setLongitude(double longitude)
 
 static bool is_valide_coord(double p_latitude, double p_longitude)
 {
-	
+	bool isValide = false;
+	if (p_latitude <= 90 && p_latitude >= 0 && p_longitude >= -180 && p_latitude <= 180 )
+	{
+		isValide = true;
+	}
+	return isValide;
+}
+
+double operator- (const Coordonnees & other) const
+{
+	const double PI = 3.141592653589793;
+	double distance;
+	//double thisLong = getLongitude();
+	//double thisLat = this->getLatitude()*PI/180;
+	double otherLong = other.getLongitude()*PI/180;
+	double otherLat = other.getLatitude()*PI/180;
+	//distance = 2*6371*(asin(sqrt(pow(sin((otherLat-thisLat)/2)),2)+cos(thisLat)*cos(otherLat))*(pow(sin((otherLong-thisLong)/2));
+	return distance;
 }
