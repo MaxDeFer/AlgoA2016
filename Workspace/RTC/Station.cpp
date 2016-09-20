@@ -7,7 +7,6 @@ m_nom(ligne_gtfs[1]),
 m_description(ligne_gtfs[2]),
 m_coords(Coordonnees(std::strtod(ligne_gtfs[3].c_str(), NULL),std::strtod(ligne_gtfs[4].c_str(), NULL))) {
 
-
 }
 
 const Coordonnees& Station::getCoords() const {

@@ -1,6 +1,8 @@
 #include "Ligne.h"
 
-Ligne::Ligne(const std::vector<std::string>& ligne_gtfs) {
+Ligne::Ligne(const std::vector<std::string>& ligne_gtfs)
+{
+
 }
 
 CategorieBus Ligne::couleurToCategorie(std::string couleur) {

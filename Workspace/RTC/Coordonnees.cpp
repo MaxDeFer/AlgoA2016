@@ -6,16 +6,15 @@
  */
 
 
-
+#include <iostream>
 #include "Coordonnees.h"
 
-Coordonnees::Coordonnees(double latitude, double longitude)
+Coordonnees::Coordonnees(double latitude, double longitude):
+m_latitude(latitude),
+m_longitude(longitude)
 {
-	this->m_latitude = latitude;
-	this->m_longitude = longitude;
 
 }
-
 
 double Coordonnees::getLatitude() const
 {
@@ -57,4 +56,10 @@ double Coordonnees::operator- (const Coordonnees & other) const
 	double otherLat = other.getLatitude()*PI/180;
 	distance = 2*6371*(asin(sqrt(pow(sin((otherLat-thisLat)/2)+cos(thisLat)*cos(otherLat),2)*(pow(sin((otherLong-thisLong)/2),2)))));
 	return distance;
+}
+
+std::ostream & operator<<(std::ostream & flux, const Coordonnees & p_coord)
+{
+	flux << "( " << p_coord.getLatitude() << ", " << p_coord.getLongitude() << " )";
+	return flux;
 }
