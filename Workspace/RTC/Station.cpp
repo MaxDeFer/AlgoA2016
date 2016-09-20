@@ -1,10 +1,13 @@
 #include "Station.h"
+#include <cstdlib>
 
 Station::Station(const std::vector<std::string>& ligne_gtfs):
 m_id(ligne_gtfs[0]),
 m_nom(ligne_gtfs[1]),
 m_description(ligne_gtfs[2]),
-m_coords(Coordonnees(atof(ligne_gtfs[3]),atof(ligne_gtfs[4]))) {
+m_coords(Coordonnees(std::strtod(ligne_gtfs[3].c_str(), NULL),std::strtod(ligne_gtfs[4].c_str(), NULL))) {
+
+
 }
 
 const Coordonnees& Station::getCoords() const {
@@ -29,7 +32,14 @@ void Station::setDescription(const std::string& description) {
 
 std::vector<Ligne*> Station::getLignesPassantes() const {
 
-	/* TODO */
+	std::vector<Ligne*> totalLignes;
+	for (int i = 0; i < this->m_voyages_passants.size(); i++)
+	{
+		totalLignes.push_back(this->m_voyages_passants[i]->getLigne());
+	}
+
+	return totalLignes;
+
 }
 
 const std::string& Station::getNom() const {
@@ -53,12 +63,18 @@ void Station::setId(unsigned int stationId) {
 }
 
 const std::vector<Voyage*>& Station::getVoyagesPassants() const {
+
+	return this->m_voyages_passants;
 }
 
 void Station::addVoyage(Voyage* ptr_voyage) {
+
+	this->m_voyages_passants.push_back(ptr_voyage);
 }
 
 double Station::distance(const Station& p_station) const {
+
+	return this->m_coords-p_station.getCoords();
 }
 /*
  * station.cpp

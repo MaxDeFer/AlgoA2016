@@ -47,14 +47,14 @@ static bool is_valide_coord(double p_latitude, double p_longitude)
 	return isValide;
 }
 
-double operator- (const Coordonnees & other) const
+double Coordonnees::operator- (const Coordonnees & other) const
 {
 	const double PI = 3.141592653589793;
 	double distance;
-	//double thisLong = getLongitude();
-	//double thisLat = this->getLatitude()*PI/180;
+	double thisLong = this->getLongitude();
+	double thisLat = this->getLatitude()*PI/180;
 	double otherLong = other.getLongitude()*PI/180;
 	double otherLat = other.getLatitude()*PI/180;
-	//distance = 2*6371*(asin(sqrt(pow(sin((otherLat-thisLat)/2)),2)+cos(thisLat)*cos(otherLat))*(pow(sin((otherLong-thisLong)/2));
+	distance = 2*6371*(asin(sqrt(pow(sin((otherLat-thisLat)/2)+cos(thisLat)*cos(otherLat),2)*(pow(sin((otherLong-thisLong)/2),2)))));
 	return distance;
 }

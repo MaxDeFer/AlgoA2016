@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
+#include <cmath>
+#include <ctgmath>
 
 /*!
  * \class Coordonnees
