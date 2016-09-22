@@ -2,11 +2,10 @@
 #include <cstdlib>
 
 Station::Station(const std::vector<std::string>& ligne_gtfs):
-m_id(std::stoi(ligne_gtfs[0])),
+m_id(ligne_gtfs[0]),
 m_nom(ligne_gtfs[1]),
 m_description(ligne_gtfs[2]),
-m_coords(std::stod(ligne_gtfs[3]),std::stod(ligne_gtfs[4])),
-m_voyages_passants(){
+m_coords(Coordonnees(std::strtod(ligne_gtfs[3].c_str(), NULL),std::strtod(ligne_gtfs[4].c_str(), NULL))) {
 
 }
 
