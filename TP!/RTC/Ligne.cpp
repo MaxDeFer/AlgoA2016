@@ -16,10 +16,10 @@ CategorieBus Ligne::couleurToCategorie(std::string couleur) {
 		tmp=CategorieBus::METRO_BUS;
 	}
 	if (couleur == "013888"){
-		tmp=CategorieBus::METRO_BUS;
+		tmp=CategorieBus::LEBUS;
 	}
 	if (couleur == "E04503"){
-		tmp=CategorieBus::METRO_BUS;
+		tmp=CategorieBus::EXPRESS;
 	}
 	if (couleur == "1A171B" && couleur == "003888"){
 		tmp=CategorieBus::METRO_BUS;
@@ -46,39 +46,62 @@ std::string Ligne::categorieToString(CategorieBus c) {
 
 CategorieBus Ligne::getCategorie() const {
 
+	return m_categorie;
 }
 
 void Ligne::setCategorie(CategorieBus categorie) {
+
+	m_categorie = categorie;
 }
 
 std::pair<std::string, std::string> Ligne::getDestinations() const {
 }
 
 unsigned int Ligne::getId() const {
+
+	return m_id;
 }
 
 void Ligne::setId(unsigned int id) {
+
+	m_id = id;
 }
 
 const std::string& Ligne::getNumero() const {
+
+	return m_numero;
 }
 
 void Ligne::setNumero(const std::string& numero) {
+
+	m_numero = numero;
 }
 
 const std::vector<Voyage*>& Ligne::getVoyages() const {
+
+	return m_voyages;
 }
 
 void Ligne::setVoyages(const std::vector<Voyage*>& voyages) {
+
+	m_voyages = voyages;
 }
 
 void Ligne::addVoyage(Voyage* ptr_voyage) {
+
+	m_voyages.push_back(ptr_voyage);
 }
 
 const std::string& Ligne::getDescription() const {
+
+	return m_description;
 }
 
 void Ligne::setDescription(const std::string& description) {
+
+	m_description = description;
+
+
 }
 /*
  * ligne.cpp

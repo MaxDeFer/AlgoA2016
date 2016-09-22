@@ -6,11 +6,15 @@
  */
 
 #include <iostream>
+#include "Coordonnees.h"
 using namespace std;
 
 int main()
 {
-	cout << "Hello world" << endl;
+	Coordonnees test = Coordonnees(12.1,12.1);
+
+	cout << test << endl;
+
 	return 0;
 }
 

@@ -1,3 +1,4 @@
+
 #include "Station.h"
 #include <cstdlib>
 
@@ -7,6 +8,7 @@ m_nom(ligne_gtfs[1]),
 m_description(ligne_gtfs[2]),
 m_coords(std::stod(ligne_gtfs[3]),std::stod(ligne_gtfs[4])),
 m_voyages_passants(){
+
 
 }
 
