@@ -23,13 +23,29 @@ bool Date::operator <(const Date& other) const {
 bool Date::operator >(const Date& other) const {
 }
 
-Heure::Heure() {
+Heure::Heure():m_heure(0), m_min(0), m_sec(0) {
 }
 
-Heure::Heure(unsigned int heure, unsigned int min, unsigned int sec) {
+Heure::Heure(unsigned int heure, unsigned int min, unsigned int sec):m_heure(heure), m_min(min), m_sec(sec)  {
 }
 
 Heure Heure::add_secondes(unsigned int secs) const {
+	unsigned int nouvelleHeure;
+	unsigned int nouvelleMin;
+	unsigned int nouvelleSec;
+
+	nouvelleSec = this->m_sec + secs;
+
+	if (nouvelleSec > 59)
+	{
+		unsigned int mins = nouvelleSec/60;
+		nouvelleSec = (this->m_sec + secs)%60;
+		if (this->m_min + mins > 60)
+		{
+
+		}
+			//TODO
+	}
 }
 
 bool Heure::operator ==(const Heure& other) const {
