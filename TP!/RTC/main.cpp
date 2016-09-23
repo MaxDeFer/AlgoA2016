@@ -47,12 +47,6 @@ int main()
 
 	printVector(vecteur1[0]);
 
-
-
-
-
-
-
 	return 0;
 
 
