@@ -38,13 +38,17 @@ Heure Heure::add_secondes(unsigned int secs) const {
 
 	if (nouvelleSec > 59)
 	{
-		unsigned int mins = nouvelleSec/60;
-		nouvelleSec = (this->m_sec + secs)%60;
-		if (this->m_min + mins > 60)
-		{
-
-		}
-			//TODO
+		nouvelleMin = nouvelleSec/60 + this->m_min;
+		nouvelleSec = nouvelleSec%60;
+	}
+	if (nouvelleMin > 59)
+	{
+		nouvelleHeure = nouvelleMin/60 + this->m_heure;
+		nouvelleMin = nouvelleMin%60;
+	}
+	if (nouvelleHeure > 23)
+	{
+		nouvelleHeure = nouvelleHeure%24;
 	}
 }
 
