@@ -8,6 +8,7 @@
 #include <iostream>
 #include "Coordonnees.h"
 #include <vector>
+#include "Auxiliaires.h"
 using namespace std;
 
 
@@ -47,10 +48,24 @@ int main()
 
 	printVector(vecteur1[0]);
 
+	Heure uneHeure(23,59,59);
+	Heure autreHeure = uneHeure.add_secondes(3601);
+	cout<<"Test operateurs"<<endl;
+	cout<<(uneHeure<uneHeure)<<endl;
+	cout<<(uneHeure<=uneHeure)<<endl;
+	cout<<(uneHeure>uneHeure)<<endl;
+	cout<<(uneHeure>=uneHeure)<<endl;
+	cout<<(uneHeure==uneHeure)<<endl;
+	cout<<(uneHeure==uneHeure)<<endl;
+	cout<<(autreHeure-uneHeure)<<endl;
 
 
-
-
+	std::string testString = "Test:Ok:Yo";
+	std::vector<std::string> testVector = split(testString, ':');
+	for (int i = 0; i < testVector.size(); i++)
+	{
+		cout<<testVector[i]<<endl;
+	}
 
 
 	return 0;
