@@ -1,27 +1,110 @@
 #include "Auxiliaires.h"
 
 std::vector<std::string> split(const std::string& s, char delim) {
+
+	std::vector<std::string> vecteurRetour;
+	std::string buffer;
+	std::stringstream ss;
+	ss.str(s);
+	while (std::getline(ss, buffer, delim))
+	{
+		vecteurRetour.push_back(buffer);
+	}
+
+	return vecteurRetour;
+
 }
 
 void lireFichier(std::string nomFichier,
 		std::vector<std::vector<std::string> >& resultats, char delimiteur,
 		bool rm_entete) {
+
+	std::string buffer;
+	std::ifstream fichier;
+	fichier.open(nomFichier);
+
+	if (rm_entete)
+	{
+		std::getline(fichier,buffer);
+	}
+
+	while (std::getline(fichier,buffer))
+	{
+
+
+	}
 }
 
-Date::Date() {
+Date::Date():m_an(1900), m_mois(1), m_jour(1) {
 }
 
-Date::Date(unsigned int an, unsigned int mois, unsigned int jour) {
+Date::Date(unsigned int an, unsigned int mois, unsigned int jour):m_an(an), m_mois(mois), m_jour(jour) {
 }
 
 bool Date::operator ==(const Date& other) const {
+
+	bool estEgal = 0;
+
+	if (this->m_an == other.m_an &&
+		this->m_mois == other.m_mois &&
+		this->m_jour == other.m_jour)
+	{
+		estEgal = 1;
+	}
+
+	return estEgal;
 }
 
 bool Date::operator <(const Date& other) const {
+
+	bool estPPetit = 0;
+
+	if (this->m_an < other.m_an)
+	{
+		estPPetit = 1;
+	}
+
+	if (this->m_an == other.m_an &&
+		this->m_mois < other.m_mois)
+	{
+		estPPetit = 1;
+	}
+
+	if (this->m_an == other.m_an &&
+		this->m_mois == other.m_mois &&
+		this->m_jour < other.m_jour)
+	{
+		estPPetit = 1;
+	}
+
+	return estPPetit;
 }
 
 bool Date::operator >(const Date& other) const {
+
+	bool estPGrand = 0;
+
+	if (this->m_an > other.m_an)
+	{
+		estPGrand = 1;
+	}
+
+	if (this->m_an == other.m_an &&
+		this->m_mois > other.m_mois)
+	{
+		estPGrand = 1;
+	}
+
+	if (this->m_an == other.m_an &&
+		this->m_mois == other.m_mois &&
+		this->m_jour > other.m_jour)
+	{
+		estPGrand = 1;
+	}
+
+	return estPGrand;
 }
+
 
 Heure::Heure():m_heure(0), m_min(0), m_sec(0) {
 }
@@ -46,28 +129,121 @@ Heure Heure::add_secondes(unsigned int secs) const {
 		nouvelleHeure = nouvelleMin/60 + this->m_heure;
 		nouvelleMin = nouvelleMin%60;
 	}
-	if (nouvelleHeure > 23)
+	if (nouvelleHeure > 29)
 	{
-		nouvelleHeure = nouvelleHeure%24;
+		nouvelleHeure = nouvelleHeure%30;
 	}
+	return Heure(nouvelleHeure, nouvelleMin, nouvelleSec);
 }
 
 bool Heure::operator ==(const Heure& other) const {
+	bool vrai = 0;
+			if (this->m_heure == other.m_heure &&
+				this->m_min == other.m_min &&
+				this->m_sec == other.m_sec)
+			{
+				vrai = 1;
+			}
+	return vrai;
 }
 
 bool Heure::operator <(const Heure& other) const {
+	bool vrai = 0;
+
+	if (this->m_heure < other.m_heure)
+	{
+		vrai = 1;
+	}
+
+	if (this->m_heure == other.m_heure &&
+		this->m_min < other.m_min)
+	{
+		vrai = 1;
+	}
+
+	if (this->m_heure == other.m_heure &&
+		this->m_min == other.m_min &&
+		this->m_sec < other.m_sec)
+	{
+		vrai = 1;
+	}
+	return vrai;
 }
 
 bool Heure::operator >(const Heure& other) const {
-}
+	bool vrai = 0;
+
+		if (this->m_heure > other.m_heure)
+		{
+			vrai = 1;
+		}
+
+		if (this->m_heure == other.m_heure &&
+			this->m_min > other.m_min)
+		{
+			vrai = 1;
+		}
+
+		if (this->m_heure == other.m_heure &&
+			this->m_min == other.m_min &&
+			this->m_sec > other.m_sec)
+		{
+			vrai = 1;
+		}
+		return vrai;
+	}
+
 
 bool Heure::operator <=(const Heure& other) const {
+	bool vrai = 0;
+
+	if (this->m_heure < other.m_heure)
+	{
+		vrai = 1;
+	}
+
+	if (this->m_heure == other.m_heure &&
+		this->m_min < other.m_min)
+	{
+		vrai = 1;
+	}
+
+	if (this->m_heure == other.m_heure &&
+		this->m_min == other.m_min &&
+		this->m_sec <= other.m_sec)
+	{
+		vrai = 1;
+	}
+	return vrai;
 }
 
 bool Heure::operator >=(const Heure& other) const {
-}
+	bool vrai = 0;
+
+			if (this->m_heure > other.m_heure)
+			{
+				vrai = 1;
+			}
+
+			if (this->m_heure == other.m_heure &&
+				this->m_min > other.m_min)
+			{
+				vrai = 1;
+			}
+
+			if (this->m_heure == other.m_heure &&
+				this->m_min == other.m_min &&
+				this->m_sec >= other.m_sec)
+			{
+				vrai = 1;
+			}
+			return vrai;
+		}
+
 
 int Heure::operator -(const Heure& other) const {
+	return (this->m_heure*3600 + this->m_min*60 + this->m_sec) -
+			(other.m_heure*3600 + other.m_min*60 + other.m_sec);
 }
 /*
  * auxiliaires.cpp
