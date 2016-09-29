@@ -19,19 +19,30 @@ void lireFichier(std::string nomFichier,
 		std::vector<std::vector<std::string> >& resultats, char delimiteur,
 		bool rm_entete) {
 
+	std::vector<std::string> vecteurLigne;
 	std::string buffer;
 	std::ifstream fichier;
-	fichier.open(nomFichier);
 
-	if (rm_entete)
+	try
 	{
-		std::getline(fichier,buffer);
+		fichier.open(nomFichier);
+
+		if (rm_entete)
+		{
+			std::getline(fichier,buffer);
+		}
+
+		while (std::getline(fichier,buffer))
+		{
+			resultats.push_back(split(buffer,delimiteur));
+		}
+
+		fichier.close();
 	}
 
-	while (std::getline(fichier,buffer))
+	catch (std::exception& e)
 	{
-
-
+		std::cout<<"Impossible d'ouvrir le fichier:"<<e.what()<<std::endl;
 	}
 }
 
