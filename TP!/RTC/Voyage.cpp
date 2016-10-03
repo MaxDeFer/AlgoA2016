@@ -89,10 +89,16 @@ void Voyage::setArrets(std::vector<Arret>& resultat) {
 
 	for (int i = 0; i < m_arrets.size() - 2; i++)
 	{
-		if (m_arrets[i].getHeureDepart() == m_arrets[i+1]getHeureDepart() &&
-				m_arrets[i].getHeureArrivee() == m_arrets[i+1]getHeureArrivee())
+		if (m_arrets[i].getHeureDepart() == m_arrets[i+1]getHeureDepart())
+
 		{
-			m_arrets[i+1].setHeureDepart((m_arretes[i+1].getHeureDepart()).add_secondes(30));
+			m_arrets[i+1].setHeureDepart((m_arrets[i+1].getHeureDepart()).add_secondes(30));
+
+		}
+
+		if (m_arrets[i].getHeureArrivee() == m_arrets[i+1]getHeureArrivee())
+		{
+			m_arrets[i+1].setHeureArrivee((m_arrets[i+1].getHeureArrivee()).add_secondes(30));
 		}
 	}
 }
