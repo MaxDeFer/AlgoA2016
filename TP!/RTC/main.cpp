@@ -6,9 +6,14 @@
  */
 
 #include <iostream>
+#include <iomanip>
 #include "Coordonnees.h"
 #include <vector>
 #include "Auxiliaires.h"
+#include "Arret.h"
+#include "Ligne.h"
+#include "Station.h"
+#include "Voyage.h"
 using namespace std;
 
 
@@ -19,57 +24,28 @@ void printVector(vector<int> vect)
 		cout<<vect[i]<<endl;
 	}
 }
-
+using namespace std;
 int main()
 {
-	Coordonnees test = Coordonnees(12.1,12.1);
+	double chrono0=clock();
 
-	cout << test << endl;
-
-	vector<int> test1;
-
-	for (int i = 0; i<4; i++)
+	vector<vector<string>> arretTxt;
+	lireFichier("stop_times.txt", arretTxt, ',', 1);
+	vector<Arret> vecteurArret;
+	for (int i=0;i<arretTxt.size();i++)
 	{
-		test1.push_back(i);
-		cout<<test1[i]<<endl;
+		Arret arret(arretTxt[i]);
+		vecteurArret.push_back(arret);
 	}
 
-	vector<vector<int>> vecteur1(10, vector<int>(10));
-	for (int i = 0; i<4; i++)
+	double chrono1=clock();
+
+	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000<<" secondes"<<endl;
+	for (int i = 0; i<vecteurArret.size(); i++)
 	{
-
-		for (int j=0;j<4;j++)
-		{
-			vecteur1[i][j] = i+j;
-			cout<<"Colonne"<<j<<", Ligne"<<i<<"Valeur du vecteur:"<<vecteur1[i][j]<<endl;
-		}
+		cout<<arretTxt[i][0]<<endl;
 	}
-	cout<<vecteur1[0][1];
-
-	printVector(vecteur1[0]);
-
-	Heure uneHeure(23,59,59);
-	Heure autreHeure = uneHeure.add_secondes(3601);
-	cout<<"Test operateurs"<<endl;
-	cout<<(uneHeure<uneHeure)<<endl;
-	cout<<(uneHeure<=uneHeure)<<endl;
-	cout<<(uneHeure>uneHeure)<<endl;
-	cout<<(uneHeure>=uneHeure)<<endl;
-	cout<<(uneHeure==uneHeure)<<endl;
-	cout<<(uneHeure==uneHeure)<<endl;
-	cout<<(autreHeure-uneHeure)<<endl;
-
-
-	std::string testString = "Test:Ok:Yo";
-	std::vector<std::string> testVector = split(testString, ':');
-	for (int i = 0; i < testVector.size(); i++)
-	{
-		cout<<testVector[i]<<endl;
-	}
-
-
 	return 0;
-
 
 
 }
