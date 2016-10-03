@@ -78,6 +78,14 @@ bool Arret::operator >(const Arret& p_other) const {
 	else{
 		return false;
 	}
+
+}
+
+std::ostream & operator<<(std::ostream& f, const Arret& p_arret)
+{
+	f << p_arret.getHeureArrivee() <<  " - " << p_arret.getStationId();
+
+	return f;
 }
 /*
  * arret.cpp

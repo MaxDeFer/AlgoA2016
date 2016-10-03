@@ -15,7 +15,7 @@ Arret& Voyage::arretDeLaStation(unsigned int p_num_station) {
 
 	int identifiant;
 
-	for (int i = 0; i<m_arrets.size(); i++)
+	for (unsigned i = 0; i<m_arrets.size(); i++)
 	{
 		if (m_arrets[i].getStationId() == p_num_station)
 		{
@@ -87,7 +87,7 @@ void Voyage::setArrets(std::vector<Arret>& resultat) {
 	m_arrets = resultat;
 	std::sort(m_arrets.begin(),m_arrets.end());
 
-	for (int i = 0; i < m_arrets.size() - 2; i++)
+	for (unsigned i = 0; i < m_arrets.size() - 2; i++)
 	{
 		if (m_arrets[i].getHeureDepart() == m_arrets[i+1].getHeureDepart())
 
@@ -111,6 +111,13 @@ bool Voyage::operator <(const Voyage& p_other) const {
 bool Voyage::operator >(const Voyage& p_other) const {
 
 	return this->getHeureDepart()>p_other.getHeureDepart();
+}
+
+std::ostream & operator<<(std::ostream & flux, const Voyage & p_voyage)
+{
+	flux << p_voyage.getId() << ": Vers" << p_voyage.getDestination();
+
+	return flux;
 }
 /*
  * voyage.cpp
