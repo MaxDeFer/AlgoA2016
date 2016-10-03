@@ -35,7 +35,7 @@ void Station::setDescription(const std::string& description) {
 std::vector<Ligne*> Station::getLignesPassantes() const {
 
 	std::vector<Ligne*> totalLignes;
-	for (int i = 0; i < this->m_voyages_passants.size(); i++)
+	for (unsigned i = 0; i < this->m_voyages_passants.size(); i++)
 	{
 		totalLignes.push_back(this->m_voyages_passants[i]->getLigne());
 	}
@@ -78,6 +78,15 @@ double Station::distance(const Station& p_station) const {
 
 	return this->m_coords-p_station.getCoords();
 }
+
+std::ostream & operator<<(std::ostream& flux, const Station& p_station)
+{
+	flux << p_station.getId() << " - " << p_station.getDescription();
+
+	return flux;
+}
+
+
 /*
  * station.cpp
  *

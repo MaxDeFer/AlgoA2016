@@ -116,6 +116,12 @@ bool Date::operator >(const Date& other) const {
 	return estPGrand;
 }
 
+std::ostream & operator<<(std::ostream & flux, const Date & p_date)
+{
+	flux << p_date.m_an << "/" << p_date.m_mois << "/" << p_date.m_jour;
+
+	return flux;
+}
 
 Heure::Heure():m_heure(0), m_min(0), m_sec(0) {
 }
@@ -255,6 +261,15 @@ bool Heure::operator >=(const Heure& other) const {
 int Heure::operator -(const Heure& other) const {
 	return (this->m_heure*3600 + this->m_min*60 + this->m_sec) -
 			(other.m_heure*3600 + other.m_min*60 + other.m_sec);
+
+
+}
+
+std::ostream & operator<<(std::ostream & flux, const Heure & p_heure)
+{
+	flux << p_heure.m_heure << ":" << p_heure.m_min << ":" << p_heure.m_sec;
+
+	return flux;
 }
 /*
  * auxiliaires.cpp
