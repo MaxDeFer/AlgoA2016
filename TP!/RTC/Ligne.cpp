@@ -55,6 +55,27 @@ void Ligne::setCategorie(CategorieBus categorie) {
 }
 
 std::pair<std::string, std::string> Ligne::getDestinations() const {
+
+	std::string depart = "";
+	std::string destination = "";
+	bool splitTest = false;
+	for (unsigned i=0; i<m_description.size()+3; i++){
+		if (!splitTest){
+			depart += m_description[i];
+			if (m_description[i+1]==' ' && m_description[i+2]=='-' && m_description[i+3]){
+				splitTest=true;
+			}
+
+		}
+		else{
+			destination += m_description[i+3];
+		}
+
+
+	}
+	std::pair<std::string, std::string> pair(depart, destination);
+	return  pair;
+
 }
 
 unsigned int Ligne::getId() const {
