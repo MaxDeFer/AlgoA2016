@@ -10,6 +10,7 @@
 #include "Auxiliaires.h"
 #include "Ligne.h"
 #include "Station.h"
+#include <algorithm>
 
 class Ligne;
 class Station;
