@@ -19,7 +19,7 @@ using namespace std;
 
 void printVector(vector<int> vect)
 {
-	for (int i = 0; i<vect.size();i++)
+	for (unsigned i = 0; i<vect.size();i++)
 	{
 		cout<<vect[i]<<endl;
 	}
@@ -27,24 +27,13 @@ void printVector(vector<int> vect)
 using namespace std;
 int main()
 {
-	double chrono0=clock();
-
-	vector<vector<string>> arretTxt;
-	lireFichier("stop_times.txt", arretTxt, ',', 1);
-	vector<Arret> vecteurArret;
-	for (int i=0;i<arretTxt.size();i++)
-	{
-		Arret arret(arretTxt[i]);
-		vecteurArret.push_back(arret);
+	vector<vector<string>> fichierLignes;
+	lireFichier("routes.txt", fichierLignes, ',', false);
+	for (unsigned i = 0; i < fichierLignes.size(); i++){
+		Ligne tempLigne = Ligne(fichierLignes[i]);
+		cout << tempLigne;
 	}
 
-	double chrono1=clock();
-
-	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000<<" secondes"<<endl;
-	for (int i = 0; i<vecteurArret.size(); i++)
-	{
-		cout<<arretTxt[i][0]<<endl;
-	}
 	return 0;
 
 
