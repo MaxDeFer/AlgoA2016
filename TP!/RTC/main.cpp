@@ -23,7 +23,7 @@ int main()
 
 	vector<vector<string>> vFichier;
 
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stop_times.txt", vFichier, ',', 1);
+	lireFichier("stop_times.txt", vFichier, ',', 1);
 
 	vector<Arret> vArret;
 
@@ -35,7 +35,7 @@ int main()
 
 	vFichier.clear();
 
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/routes.txt", vFichier, ',', 1);
+	lireFichier("routes.txt", vFichier, ',', 1);
 
 	vector<Ligne> vLigne;
 
@@ -47,7 +47,7 @@ int main()
 
 	vFichier.clear();
 
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stops.txt", vFichier, ',', 1);
+	lireFichier("stops.txt", vFichier, ',', 1);
 
 	vector<Station> vStation;
 
@@ -59,7 +59,7 @@ int main()
 
 	vFichier.clear();
 
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/trips.txt", vFichier, ',', 1);
+	lireFichier("trips.txt", vFichier, ',', 1);
 
 	cout<<vArret.size()<<endl;
 	for (int i=0; i<vLigne.size(); i++)

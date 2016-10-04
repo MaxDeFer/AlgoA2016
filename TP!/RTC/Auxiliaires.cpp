@@ -1,5 +1,13 @@
 #include "Auxiliaires.h"
 
+
+/**
+ * \brief Méthode séparant des string par un délimiteur
+ * \param[in] s == Le string devant être séparé
+ * \param[in] delim == Le charactère où efectuer les coupes
+ * \return Un vecteur dont les éléments sont les mots séparés
+ */
+
 std::vector<std::string> split(const std::string& s, char delim) {
 
 	std::vector<std::string> vecteurRetour;
@@ -14,7 +22,13 @@ std::vector<std::string> split(const std::string& s, char delim) {
 	return vecteurRetour;
 
 }
-
+/**
+ * \brief Méthode qui effectue la lecture d'un fichier texte
+ * \param[in] resultat == Le vecteur 2D où seront enregistré chaque lignes sous forme de vecteur dont les
+ * éléments seront les colonnes du fichier textes
+ * \param[in] delimiteur == Le charactère où efectuer les coupes des "colonnes"
+ * \param[in] rm_entete == Un booléen qui détermine si l'entête doit être inclu dans le vecteur
+ */
 void lireFichier(std::string nomFichier,
 		std::vector<std::vector<std::string> >& resultats, char delimiteur,
 		bool rm_entete) {
@@ -45,6 +59,11 @@ void lireFichier(std::string nomFichier,
 	}
 }
 
+
+/**
+ * \brief Constructeur de date par défaut
+ */
+
 Date::Date() {
 
 	time_t secondes = time(0);
@@ -55,9 +74,21 @@ Date::Date() {
 	m_jour = temps->tm_mday;
 }
 
+/**
+ * \brief Constructeur de date avec paramètre
+ * \param[in] an == L'année correspondante à la date
+ * \param[in] mois == Le mois correspondant à la date
+ * \param[in] jour == Le jour correspondant à la date
+ */
 Date::Date(unsigned int an, unsigned int mois, unsigned int jour):m_an(an), m_mois(mois), m_jour(jour) {
 }
 
+
+/**
+ * \brief Méthode de surcharge de comparateur
+ * \param[in] p_other == Deuxième date à comparer à notre objet courant
+ * \return Un booléen true si les dates sont égales, false sinon
+ */
 bool Date::operator ==(const Date& other) const {
 
 	bool estEgal = 0;
@@ -71,7 +102,11 @@ bool Date::operator ==(const Date& other) const {
 
 	return estEgal;
 }
-
+/**
+ * \brief Méthode de surcharge de comparateur "Plus petit que" entre deux dates
+ * \param[in] p_other == Deuxième date à comparer à notre objet courant
+ * \return Un booléen correspondant au résultat
+ */
 bool Date::operator <(const Date& other) const {
 
 	bool estPPetit = 0;
@@ -97,6 +132,11 @@ bool Date::operator <(const Date& other) const {
 	return estPPetit;
 }
 
+/**
+ * \brief Méthode de surcharge de comparateur "Plus grand que" entre deux dates
+ * \param[in] p_other == Deuxième date à comparer à notre objet courant
+ * \return Un booléen correspondant au résultat
+ */
 bool Date::operator >(const Date& other) const {
 
 	bool estPGrand = 0;
@@ -122,6 +162,13 @@ bool Date::operator >(const Date& other) const {
 	return estPGrand;
 }
 
+
+/**
+ * \brief Méthode de surcharge qui implante le format de l'opérateur <<
+ * \param[in] f == ostream où sera envoyé les informations formatés
+ * \param[in] p_date == Arret qui doit être envoyé dans le ostream
+ * \return le contenu du ostream
+ */
 std::ostream & operator<<(std::ostream & flux, const Date & p_date)
 {
 	flux << p_date.m_an << "/" << p_date.m_mois << "/" << p_date.m_jour;
@@ -129,17 +176,16 @@ std::ostream & operator<<(std::ostream & flux, const Date & p_date)
 	return flux;
 }
 
-Heure::Heure() {
-	time_t secondes = time(0);
-	tm *temps = localtime(&secondes);
-
-	m_heure = temps->tm_hour;
-	m_min = temps->tm_min;
-	m_sec = temps->tm_sec;
-
-
+Heure::Heure():m_heure(0), m_min(0), m_sec(0) {
 }
 
+
+/**
+ * \brief Constructeur de date avec paramètre
+ * \param[in] heure == L'année correspondante à la date
+ * \param[in] min == Le mois correspondant à la date
+ * \param[in] sec == Le jour correspondant à la date
+ */
 Heure::Heure(unsigned int heure, unsigned int min, unsigned int sec):m_heure(heure), m_min(min), m_sec(sec)  {
 }
 
@@ -167,6 +213,11 @@ Heure Heure::add_secondes(unsigned int secs) const {
 	return Heure(nouvelleHeure, nouvelleMin, nouvelleSec);
 }
 
+/**
+ * \brief Méthode de surcharge de comparateur
+ * \param[in] p_other == Deuxième heure à comparer à notre objet courant
+ * \return Un booléen true si les heure sont égales, false sinon
+ */
 bool Heure::operator ==(const Heure& other) const {
 	bool vrai = 0;
 			if (this->m_heure == other.m_heure &&
@@ -178,6 +229,11 @@ bool Heure::operator ==(const Heure& other) const {
 	return vrai;
 }
 
+/**
+ * \brief Méthode de surcharge de comparateur "Plus petit que" entre deux heures
+ * \param[in] p_other == Deuxième heure à comparer à notre objet courant
+ * \return Un booléen correspondant au résultat
+ */
 bool Heure::operator <(const Heure& other) const {
 	bool vrai = 0;
 
@@ -200,7 +256,11 @@ bool Heure::operator <(const Heure& other) const {
 	}
 	return vrai;
 }
-
+/**
+ * \brief Méthode de surcharge de comparateur "Plus grand que" entre deux heures
+ * \param[in] p_other == Deuxième heure à comparer à notre objet courant
+ * \return Un booléen correspondant au résultat
+ */
 bool Heure::operator >(const Heure& other) const {
 	bool vrai = 0;
 
@@ -224,7 +284,11 @@ bool Heure::operator >(const Heure& other) const {
 		return vrai;
 	}
 
-
+/**
+ * \brief Méthode de surcharge de comparateur "Plus petit ou égale que" entre deux heures
+ * \param[in] p_other == Deuxième heure à comparer à notre objet courant
+ * \return Un booléen correspondant au résultat
+ */
 bool Heure::operator <=(const Heure& other) const {
 	bool vrai = 0;
 
@@ -247,7 +311,11 @@ bool Heure::operator <=(const Heure& other) const {
 	}
 	return vrai;
 }
-
+/**
+ * \brief Méthode de surcharge de comparateur "Plus grand ou égale que" entre deux heures
+ * \param[in] p_other == Deuxième heure à comparer à notre objet courant
+ * \return Un booléen correspondant au résultat
+ */
 bool Heure::operator >=(const Heure& other) const {
 	bool vrai = 0;
 
@@ -271,7 +339,11 @@ bool Heure::operator >=(const Heure& other) const {
 			return vrai;
 		}
 
-
+/**
+ * \brief Méthode de surcharge de comparateur de soustraction entre deux heures
+ * \param[in] p_other == Deuxième heure à comparer à notre objet courant
+ * \return Un booléen correspondant au résultat
+ */
 int Heure::operator -(const Heure& other) const {
 	return (this->m_heure*3600 + this->m_min*60 + this->m_sec) -
 			(other.m_heure*3600 + other.m_min*60 + other.m_sec);
@@ -279,6 +351,13 @@ int Heure::operator -(const Heure& other) const {
 
 }
 
+
+/**
+ * \brief Méthode de surcharge qui implante le format de l'opérateur <<
+ * \param[in] f == ostream où sera envoyé les informations formatés
+ * \param[in] p_heure == Heure qui doit être envoyé dans le ostream
+ * \return le contenu du ostream
+ */
 std::ostream & operator<<(std::ostream & flux, const Heure & p_heure)
 {
 	flux << p_heure.m_heure << ":" << p_heure.m_min << ":" << p_heure.m_sec;
