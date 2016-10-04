@@ -19,7 +19,6 @@ void lireFichier(std::string nomFichier,
 		std::vector<std::vector<std::string> >& resultats, char delimiteur,
 		bool rm_entete) {
 
-	std::vector<std::string> vecteurLigne;
 	std::string buffer;
 	std::ifstream fichier;
 
@@ -46,7 +45,14 @@ void lireFichier(std::string nomFichier,
 	}
 }
 
-Date::Date():m_an(1900), m_mois(1), m_jour(1) {
+Date::Date() {
+
+	time_t secondes = time(0);
+	tm *temps = localtime(&secondes);
+
+	m_an = temps->tm_year;
+	m_mois = temps->tm_mon;
+	m_jour = temps->tm_mday;
 }
 
 Date::Date(unsigned int an, unsigned int mois, unsigned int jour):m_an(an), m_mois(mois), m_jour(jour) {
@@ -123,7 +129,15 @@ std::ostream & operator<<(std::ostream & flux, const Date & p_date)
 	return flux;
 }
 
-Heure::Heure():m_heure(0), m_min(0), m_sec(0) {
+Heure::Heure() {
+	time_t secondes = time(0);
+	tm *temps = localtime(&secondes);
+
+	m_heure = temps->tm_hour;
+	m_min = temps->tm_min;
+	m_sec = temps->tm_sec;
+
+
 }
 
 Heure::Heure(unsigned int heure, unsigned int min, unsigned int sec):m_heure(heure), m_min(min), m_sec(sec)  {

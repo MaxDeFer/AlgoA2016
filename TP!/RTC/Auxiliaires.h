@@ -11,6 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include <exception>
+#include <ctime>
 
 /*!
  * \brief Cette fonction permet de séparer une chaine de caractère en un vecteur de chaines de caractère séparés par un délimiteur

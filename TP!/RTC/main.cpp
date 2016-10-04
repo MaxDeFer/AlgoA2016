@@ -17,6 +17,7 @@
 using namespace std;
 
 
+
 void printVector(vector<int> vect)
 {
 	for (int i = 0; i<vect.size();i++)
@@ -29,22 +30,90 @@ int main()
 {
 	double chrono0=clock();
 
-	vector<vector<string>> arretTxt;
-	lireFichier("stop_times.txt", arretTxt, ',', 1);
-	vector<Arret> vecteurArret;
-	for (int i=0;i<arretTxt.size();i++)
+	vector<vector<string>> vFichier;
+
+	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stop_times.txt", vFichier, ',', 1);
+
+	vector<Arret> vArret;
+
+	for (int i=0;i<vFichier.size();i++)
 	{
-		Arret arret(arretTxt[i]);
-		vecteurArret.push_back(arret);
+		Arret arret(vFichier[i]);
+		vArret.push_back(arret);
 	}
+
+	vFichier.clear();
+
+	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/routes.txt", vFichier, ',', 1);
+
+	vector<Ligne> vLigne;
+
+	for (int i=0;i<vFichier.size();i++)
+		{
+			Ligne ligne(vFichier[i]);
+			vLigne.push_back(ligne);
+		}
+
+	vFichier.clear();
+
+	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stops.txt", vFichier, ',', 1);
+
+	vector<Station> vStation;
+
+	for (int i=0;i<vFichier.size();i++)
+			{
+				Station station(vFichier[i]);
+				vStation.push_back(station);
+			}
+
+	vFichier.clear();
+
+	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/trips.txt", vFichier, ',', 1);
+
+
+	for (int i=0; i<vLigne.size(); i++)
+	{
+		for (int j=0; j<vFichier.size(); j++)
+		{
+			cout<<"test "<<i<<":"<<j<<endl;
+				if (vLigne[i].getId() == stoi(vFichier[j][0]))
+				{
+					Voyage voyage(vFichier[j],&vLigne[i]);
+					vector<Arret> arretVoyage;
+					for (int k = 0; k<vArret.size(); k++)
+					{
+
+						if (vArret[k].getVoyageId() == voyage.getId())
+						{
+							arretVoyage.push_back(vArret[k]);
+						}
+					}
+					voyage.setArrets(arretVoyage);
+					vLigne[i].addVoyage(&voyage);
+				}
+		}
+	}
+
+	vFichier.clear();
 
 	double chrono1=clock();
 
-	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000<<" secondes"<<endl;
-	for (int i = 0; i<vecteurArret.size(); i++)
+	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000000<<" secondes"<<endl;
+	for (int i = 0; i<30; i++)
 	{
-		cout<<arretTxt[i][0]<<endl;
+		cout<<vArret[i].getNumeroSequence()<<endl;
 	}
+
+	for (int i = 0; i<30; i++)
+	{
+		cout<<vLigne[i].getId()<<endl;
+	}
+
+	for (int i = 0; i<30; i++)
+	{
+		cout<<vStation[i].getId()<<endl;
+	}
+
 	return 0;
 
 
