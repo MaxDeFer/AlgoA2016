@@ -61,6 +61,7 @@ int main()
 
 	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/trips.txt", vFichier, ',', 1);
 
+	cout<<vArret.size()<<endl;
 	for (int i=0; i<vLigne.size(); i++)
 	{
 		for (int j=0; j<3/*j<vFichier.size()*/; j++)
@@ -68,6 +69,17 @@ int main()
 				if (vLigne[i].getId() == stoi(vFichier[j][0]))
 				{
 					Voyage voyage(vFichier[j],&vLigne[i]);
+					cout<<voyage<<endl;
+					vector<Arret> arretVoyage;
+					for (int k = 0; k<vArret.size(); k++)
+					{
+						if (vArret[k].getVoyageId() == voyage.getId())
+						{
+							cout<<"Arret trouvé!"<<endl;
+							arretVoyage.push_back(vArret[k]);
+						}
+					}
+					voyage.setArrets(arretVoyage);
 					vLigne[i].addVoyage(&voyage);
 				}
 		}
