@@ -176,7 +176,14 @@ std::ostream & operator<<(std::ostream & flux, const Date & p_date)
 	return flux;
 }
 
-Heure::Heure():m_heure(0), m_min(0), m_sec(0) {
+Heure::Heure(){
+
+	time_t secondes = time(0);
+	tm *temps = localtime(&secondes);
+
+	m_heure = temps->tm_hour;
+	m_min = temps->tm_min;
+	m_sec = temps->tm_sec;
 }
 
 

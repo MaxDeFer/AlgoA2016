@@ -23,7 +23,7 @@ int main()
 
 
 
-	vector<vector<string>> fichierLigne;
+/*	vector<vector<string>> fichierLigne;
 
 	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/routes.txt", fichierLigne, ',', 1);
 
@@ -96,24 +96,36 @@ int main()
 		vLigne[i].setVoyages(ligneVoyage);
 	}
 
+*/
 
-/*	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stop_times.txt", vFichier, ',', 1);
+	vector<vector<string>> vFichier;
+	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stop_times.txt", vFichier, ',', 1);
 
 
 
 	vector<Arret> vArret;
-
+	vArret.reserve(vFichier.size());
+	Heure now;
+	Heure then = now.add_secondes(3600);
 	for (int i=0;i<vFichier.size();i++)
 	{
 		Arret arret(vFichier[i]);
+		if (now<arret.getHeureDepart() &&
+			arret.getHeureDepart()<then)
+		{
 		vArret.push_back(arret);
+		}
 	}
 
 	vFichier.clear();
 
-	lireFichier("routes.txt", vFichier, ',', 1);
+	double chrono2 = clock();
+	cout<<"Temps apres Arret:"<<(chrono2-chrono0)/1000000<<endl;
+
+	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/routes.txt", vFichier, ',', 1);
 
 	vector<Ligne> vLigne;
+	vLigne.reserve(vFichier.size());
 
 	for (int i=0;i<vFichier.size();i++)
 		{
@@ -123,9 +135,10 @@ int main()
 
 	vFichier.clear();
 
-	lireFichier("stops.txt", vFichier, ',', 1);
+	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stops.txt", vFichier, ',', 1);
 
 	vector<Station> vStation;
+	vStation.reserve(vFichier.size());
 
 	for (int i=0;i<vFichier.size();i++)
 			{
@@ -134,8 +147,10 @@ int main()
 			}
 
 	vFichier.clear();
+	double chrono3 = clock();
+	cout<<"Temps avant LA boucle:"<<(chrono3 - chrono0)/1000000<<endl;
 
-	lireFichier("trips.txt", vFichier, ',', 1);
+	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/trips.txt", vFichier, ',', 1);
 
 	for (int i=0; i<vLigne.size(); i++)
 	{
@@ -159,7 +174,7 @@ int main()
 	}
 
 	vFichier.clear();
-*/
+
 	double chrono1=clock();
 
 	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000000<<" secondes"<<endl;
