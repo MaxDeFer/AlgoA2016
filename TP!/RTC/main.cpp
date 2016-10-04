@@ -107,6 +107,7 @@ int main()
 	vArret.reserve(vFichier.size());
 	Heure now;
 	Heure then = now.add_secondes(3600);
+
 	for (int i=0;i<vFichier.size();i++)
 	{
 		Arret arret(vFichier[i]);
@@ -154,16 +155,21 @@ int main()
 
 	for (int i=0; i<vLigne.size(); i++)
 	{
+		cout<<"1re"<<endl;
 		for (int j=0; j<vFichier.size(); j++)
 		{
+			cout<<"2e"<<endl;
 				if (vLigne[i].getId() == stoi(vFichier[j][0]))
 				{
+					cout<<"1er if"<<endl;
 					Voyage voyage(vFichier[j],&vLigne[i]);
 					vector<Arret> arretVoyage;
 					for (int k = 0; k<vArret.size(); k++)
 					{
+						cout<<"3e: "<<(vArret[k].getVoyageId() == voyage.getId())<<endl;
 						if (vArret[k].getVoyageId() == voyage.getId())
 						{
+							cout<<"2e if"<<endl;
 							arretVoyage.push_back(vArret[k]);
 						}
 					}
