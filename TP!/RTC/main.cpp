@@ -53,9 +53,9 @@ int main()
 	{
 		for (int j = 0; j<fichierVoyage.size(); j++)
 		{
-			if (vLigne[i].getId()==fichierVoyage[j][0])
+			if (vLigne[i].getId() == stoi(fichierVoyage[j][0]))
 			{
-				Voyage unVoyage(fichierVoyage);
+				Voyage unVoyage(fichierVoyage[j],&vLigne[i]);
 				vVoyage.push_back(unVoyage);
 			}
 		}
@@ -85,15 +85,15 @@ int main()
 
 	for (int i = 0; i<vLigne.size(); i++)
 	{
-		vector<Voyage> ligneVoyage;
+		vector<Voyage*> ligneVoyage;
 		for (int j = 0; j<vVoyage.size(); j++)
 		{
-			if (vLigne[i].getId() == vVoyage[j].getLigne().getId())
+			if (vLigne[i].getId() == vVoyage[j].getLigne()->getId())
 			{
-				ligneVoyage.push_back(vVoyage[j]);
+				ligneVoyage.push_back(&vVoyage[j]);
 			}
 		}
-		vLigne[i].setVoyages(ligneVoyage&);
+		vLigne[i].setVoyages(ligneVoyage);
 	}
 
 
