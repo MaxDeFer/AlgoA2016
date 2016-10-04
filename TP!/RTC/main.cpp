@@ -104,7 +104,6 @@ int main()
 
 
 	vector<Arret> vArret;
-	vArret.reserve(vFichier.size());
 	Heure now;
 	Heure then = now.add_secondes(3600);
 
@@ -126,7 +125,6 @@ int main()
 	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/routes.txt", vFichier, ',', 1);
 
 	vector<Ligne> vLigne;
-	vLigne.reserve(vFichier.size());
 
 	for (int i=0;i<vFichier.size();i++)
 		{
@@ -139,7 +137,6 @@ int main()
 	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stops.txt", vFichier, ',', 1);
 
 	vector<Station> vStation;
-	vStation.reserve(vFichier.size());
 
 	for (int i=0;i<vFichier.size();i++)
 			{
@@ -148,6 +145,7 @@ int main()
 			}
 
 	vFichier.clear();
+
 	double chrono3 = clock();
 	cout<<"Temps avant LA boucle:"<<(chrono3 - chrono0)/1000000<<endl;
 
@@ -155,27 +153,26 @@ int main()
 
 	for (int i=0; i<vLigne.size(); i++)
 	{
-		cout<<"1re"<<endl;
 		for (int j=0; j<vFichier.size(); j++)
 		{
-			cout<<"2e"<<endl;
-				if (vLigne[i].getId() == stoi(vFichier[j][0]))
+			if (vLigne[i].getId() == stoi(vFichier[j][0]))
+			{
+				Voyage voyage(vFichier[j],&vLigne[i]);
+				vector<Arret> arretVoyage;
+
+				for (int k = 0; k<vArret.size(); k++)
 				{
-					cout<<"1er if"<<endl;
-					Voyage voyage(vFichier[j],&vLigne[i]);
-					vector<Arret> arretVoyage;
-					for (int k = 0; k<vArret.size(); k++)
+					if (vArret[k].getVoyageId() == voyage.getId())
 					{
-						cout<<"3e: "<<(vArret[k].getVoyageId() == voyage.getId())<<endl;
-						if (vArret[k].getVoyageId() == voyage.getId())
-						{
-							cout<<"2e if"<<endl;
-							arretVoyage.push_back(vArret[k]);
-						}
+						arretVoyage.push_back(vArret[k]);
 					}
-					voyage.setArrets(arretVoyage);
-					vLigne[i].addVoyage(&voyage);
 				}
+				if(arretVoyage.size() > 1)
+				{
+				voyage.setArrets(arretVoyage);
+				vLigne[i].addVoyage(&voyage);
+				}
+			}
 		}
 	}
 
