@@ -22,7 +22,7 @@ int main()
 	double chrono0=clock();
 
 
-<<<<<<< HEAD
+
 	vector<vector<string>> fichierLigne;
 
 	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/routes.txt", fichierLigne, ',', 1);
@@ -53,7 +53,7 @@ int main()
 	{
 		for (int j = 0; j<fichierVoyage.size(); j++)
 		{
-			if (vLigne[i].getId()==fichierVoyage[0])
+			if (vLigne[i].getId()==fichierVoyage[j][0])
 			{
 				Voyage unVoyage(fichierVoyage);
 				vVoyage.push_back(unVoyage);
@@ -61,11 +61,45 @@ int main()
 		}
 	}
 
+	vector<Arret> vArret;
+
+	for (int i = 0; i<fichierArret.size(); i++)
+	{
+		Arret unArret(fichierArret[i]);
+		vArret.push_back(unArret);
+	}
+
+
+	for (int i = 0; i<vVoyage.size(); i++)
+	{
+		vector<Arret> arretVoyage;
+		for (int j = 0; j<vArret.size(); j++)
+		{
+			if (vVoyage[i].getId() == vArret[j].getVoyageId())
+			{
+				arretVoyage.push_back(vArret[j]);
+			}
+		}
+		vVoyage[i].setArrets(arretVoyage);
+	}
+
+	for (int i = 0; i<vLigne.size(); i++)
+	{
+		vector<Voyage> ligneVoyage;
+		for (int j = 0; j<vVoyage.size(); j++)
+		{
+			if (vLigne[i].getId() == vVoyage[j].getLigne().getId())
+			{
+				ligneVoyage.push_back(vVoyage[j]);
+			}
+		}
+		vLigne[i].setVoyages(ligneVoyage&);
+	}
+
 
 /*	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stop_times.txt", vFichier, ',', 1);
-=======
-	lireFichier("stop_times.txt", vFichier, ',', 1);
->>>>>>> master
+
+
 
 	vector<Arret> vArret;
 
