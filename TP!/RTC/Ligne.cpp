@@ -1,10 +1,11 @@
 #include "Ligne.h"
+#include <iostream>
 
 Ligne::Ligne(const std::vector<std::string>& ligne_gtfs):
-m_id(std::stoi(ligne_gtfs[0])),
+m_id(atoi(ligne_gtfs[0].c_str())),
 m_numero(ligne_gtfs[2]),
 m_description(ligne_gtfs[4]),
-m_categorie(couleurToCategorie(ligne_gtfs[6])),
+m_categorie(couleurToCategorie(ligne_gtfs[7])),
 m_voyages()
 {
 
@@ -32,14 +33,17 @@ std::string Ligne::categorieToString(CategorieBus c) {
 	if (c == CategorieBus::COUCHE_TARD){
 		tmp="COUCHE_TARD";
 	}
-	if (c == CategorieBus::EXPRESS){
+	else if (c == CategorieBus::EXPRESS){
 		tmp="EXPRESS";
 	}
-	if (c == CategorieBus::LEBUS){
+	else if (c == CategorieBus::LEBUS){
 		tmp="LEBUS";
 	}
-	if (c == CategorieBus::METRO_BUS){
+	else if (c == CategorieBus::METRO_BUS){
 		tmp="METRO_BUS";
+	}
+	else{
+		tmp="fuck";
 	}
 	return tmp;
 }

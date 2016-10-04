@@ -1,5 +1,19 @@
 #include "Arret.h"
 
+
+/**
+ * \brief Constructeur d'Arret avec paramètres
+ * \param[in] ligne_gtfs == Un vecteur de string comportant les informations contenus dans stop
+ * \pre p_nom est dans un format valide
+ * \pre p_volume est dans un format valide
+ * \pre p_numero est dans un format valide
+ * \pre p_page est dans un format valide
+ * \post m_nom prend la valeur de p_nom
+ * \post m_volume prend la valeur de p_volume
+ * \post m_numero prend la valeur de p_numero
+ * \post m_page prend la valeur de p_page
+ */
+
 Arret::Arret(const std::vector<std::string>& ligne_gtfs):
 		m_station_id(std::stoi(ligne_gtfs[0])),
 		m_heure_arrivee(Heure(std::stoi(ligne_gtfs[1].substr(0,2)),std::stoi(ligne_gtfs[1].substr(3,2)), std::stoi(ligne_gtfs[1].substr(6,2)))),

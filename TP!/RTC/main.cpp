@@ -20,7 +20,7 @@ using namespace std;
 
 void printVector(vector<int> vect)
 {
-	for (int i = 0; i<vect.size();i++)
+	for (unsigned i = 0; i<vect.size();i++)
 	{
 		cout<<vect[i]<<endl;
 	}
@@ -28,6 +28,7 @@ void printVector(vector<int> vect)
 using namespace std;
 int main()
 {
+<<<<<<< HEAD
 	double chrono0=clock();
 
 	vector<vector<string>> vFichier;
@@ -114,6 +115,15 @@ int main()
 		cout<<vStation[i].getId()<<endl;
 	}
 
+=======
+	vector<vector<string>> fichierLignes;
+	lireFichier("routes.txt", fichierLignes, ',', false);
+	for (unsigned i = 0; i < fichierLignes.size(); i++){
+		Ligne tempLigne = Ligne(fichierLignes[i]);
+		cout << tempLigne;
+	}
+
+>>>>>>> master
 	return 0;
 
 
