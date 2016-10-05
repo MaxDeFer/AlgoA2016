@@ -94,8 +94,9 @@ int main()
 				voyage.setArrets(arretVoyage);
 				vVoyage.push_back(voyage);
 				int waouh = vVoyage.size()-1;
-				cout<<vVoyage[waouh]<<endl;
+				cout<<&vVoyage[waouh]<<endl;
 				vLigne[i].addVoyage(&(vVoyage[waouh]));
+				cout<<*vLigne[i].getVoyages()[0]<<endl;
 				}
 			}
 		}
