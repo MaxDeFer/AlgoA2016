@@ -73,30 +73,32 @@ int main()
 	lireFichier("trips.txt", vFichier, ',', 1);
 
 	vector<Voyage> vVoyage;
+
+	vector<Arret> arretVoyage;
 	for (int i=0; i<vLigne.size(); i++)
 	{
 		for (int j=0; j<vFichier.size(); j++)
 		{
+			Voyage voyage(vFichier[j],&vLigne[i]);
 			if (vLigne[i].getId() == stoi(vFichier[j][0]))
 			{
-				Voyage voyage(vFichier[j],&vLigne[i]);
-				vector<Arret> arretVoyage;
-
 				for (int k = 0; k<vArret.size(); k++)
 				{
 					if (vArret[k].getVoyageId() == voyage.getId())
 					{
+						//cout<<"Found!"<<endl;
 						arretVoyage.push_back(vArret[k]);
 					}
 				}
 				if(arretVoyage.size() > 1)
 				{
 				voyage.setArrets(arretVoyage);
+				arretVoyage.clear();
 				vVoyage.push_back(voyage);
 				int waouh = vVoyage.size()-1;
 				cout<<&vVoyage[waouh]<<endl;
 				vLigne[i].addVoyage(&(vVoyage[waouh]));
-				cout<<*vLigne[i].getVoyages()[0]<<endl;
+				cout<<vLigne[i].getVoyages().size()<<endl;
 				}
 			}
 		}
@@ -167,6 +169,7 @@ int main()
 
 	}
 	toFile.close();
+
 
 
 

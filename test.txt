@@ -1,4 +1,4 @@
-Chargement des données terminé en 50.5104 secondes
+Chargement des données terminé en 32.6191 secondes
 ===================
 Ligne de la RTC
 Compte = 161
@@ -4878,4 +4878,4 @@ Compte = 4547
 2938 - "W.-Caron"
 ===================
 Voyage de la journée du 2016/10/5
-12:37:29-13:37:29
+13:05:04-14:05:04
