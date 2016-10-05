@@ -22,83 +22,6 @@ int main()
 {
 	double chrono0=clock();
 
-
-
-
-/*	vector<vector<string>> fichierLigne;
-
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/routes.txt", fichierLigne, ',', 1);
-
-	vector<vector<string>> fichierVoyage;
-
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/trips.txt", fichierVoyage, ',', 1);
-
-	vector<vector<string>> fichierStation;
-
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stops.txt", fichierStation, ',', 1);
-
-	vector<vector<string>> fichierArret;
-
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stop_times.txt", fichierArret, ',', 1);
-
-	vector<Ligne> vLigne;
-
-	for (int i=0; i<fichierLigne.size(); i++)
-	{
-		Ligne uneLigne(fichierLigne[i]);
-		vLigne.push_back(uneLigne);
-	}
-
-	vector<Voyage> vVoyage;
-
-	for (int i = 0; i<vLigne.size(); i++)
-	{
-		for (int j = 0; j<fichierVoyage.size(); j++)
-		{
-			if (vLigne[i].getId() == stoi(fichierVoyage[j][0]))
-			{
-				Voyage unVoyage(fichierVoyage[j],&vLigne[i]);
-				vVoyage.push_back(unVoyage);
-			}
-		}
-	}
-
-	vector<Arret> vArret;
-
-	for (int i = 0; i<fichierArret.size(); i++)
-	{
-		Arret unArret(fichierArret[i]);
-		vArret.push_back(unArret);
-	}
-
-
-	for (int i = 0; i<vVoyage.size(); i++)
-	{
-		vector<Arret> arretVoyage;
-		for (int j = 0; j<vArret.size(); j++)
-		{
-			if (vVoyage[i].getId() == vArret[j].getVoyageId())
-			{
-				arretVoyage.push_back(vArret[j]);
-			}
-		}
-		vVoyage[i].setArrets(arretVoyage);
-	}
-
-	for (int i = 0; i<vLigne.size(); i++)
-	{
-		vector<Voyage*> ligneVoyage;
-		for (int j = 0; j<vVoyage.size(); j++)
-		{
-			if (vLigne[i].getId() == vVoyage[j].getLigne()->getId())
-			{
-				ligneVoyage.push_back(&vVoyage[j]);
-			}
-		}
-		vLigne[i].setVoyages(ligneVoyage);
-	}
-
-*/
 	//Code chargeant les arrets dans les voyages et les voyages dans les lignes
 	vector<vector<string>> vFichier;
 	lireFichier("stop_times.txt", vFichier, ',', 1);
@@ -120,9 +43,6 @@ int main()
 	}
 
 	vFichier.clear();
-
-	double chrono2 = clock();
-	cout<<"Temps apres Arret:"<<(chrono2-chrono0)/1000000<<endl;
 
 	lireFichier("routes.txt", vFichier, ',', 1);
 
@@ -149,10 +69,10 @@ int main()
 	vFichier.clear();
 
 	double chrono3 = clock();
-	cout<<"Temps avant LA boucle:"<<(chrono3 - chrono0)/1000000<<endl;
 
 	lireFichier("trips.txt", vFichier, ',', 1);
 
+	vector<Voyage> vVoyage;
 	for (int i=0; i<vLigne.size(); i++)
 	{
 		for (int j=0; j<vFichier.size(); j++)
@@ -172,14 +92,16 @@ int main()
 				if(arretVoyage.size() > 1)
 				{
 				voyage.setArrets(arretVoyage);
-				vLigne[i].addVoyage(&voyage);
+				vVoyage.push_back(voyage);
+				int waouh = vVoyage.size()-1;
+				cout<<vVoyage[waouh]<<endl;
+				vLigne[i].addVoyage(&(vVoyage[waouh]));
 				}
 			}
 		}
 	}
 
 	vFichier.clear();
-
 	double chrono1=clock();
 	ofstream toFile;
 	Date aujourdhui = Date();
@@ -207,6 +129,7 @@ int main()
 			<< "Voyage de la journée du " << aujourdhui << endl << now << "-" << then << endl;
 			vector<Voyage> voyageNow;
 			string serviceNow;
+
 			lireFichier("calendar_dates.txt", vFichier, ',', 1);
 			for (int i = 0; i<vFichier.size(); i++)
 			{
@@ -218,11 +141,13 @@ int main()
 					serviceNow = vFichier[i][0];
 				}
 			}
+			cout<<serviceNow<<" : "<<((vLigne[0].getVoyages())[0]->getServiceId())<<endl;
+
 			for (int i = 0; i<vLigne.size(); i++)
 			{
 				for (int j = 0; j<vLigne[i].getVoyages().size(); j++)
 				{
-					if (vLigne[i].getVoyages()[j]->getServiceId() == serviceNow)
+					if ((vLigne[i].getVoyages()[j])->getServiceId() == serviceNow)
 					{
 					voyageNow.push_back(*(vLigne[i].getVoyages()[j]));
 					}
