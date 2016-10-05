@@ -1,6 +1,5 @@
 #include "Auxiliaires.h"
 
-
 /**
  * \brief Méthode séparant des string par un délimiteur
  * \param[in] s == Le string devant être séparé
@@ -69,8 +68,8 @@ Date::Date() {
 	time_t secondes = time(0);
 	tm *temps = localtime(&secondes);
 
-	m_an = temps->tm_year;
-	m_mois = temps->tm_mon;
+	m_an = temps->tm_year+1900;
+	m_mois = temps->tm_mon+1;
 	m_jour = temps->tm_mday;
 }
 
@@ -367,7 +366,19 @@ int Heure::operator -(const Heure& other) const {
  */
 std::ostream & operator<<(std::ostream & flux, const Heure & p_heure)
 {
-	flux << p_heure.m_heure << ":" << p_heure.m_min << ":" << p_heure.m_sec;
+	std::string ajusteH = "";
+	std::string ajusteM = "";
+	std::string ajusteS = "";
+	if (p_heure.m_heure < 10){
+		ajusteH = "0";
+	}
+	if (p_heure.m_min < 10){
+		ajusteM = "0";
+	}
+	if (p_heure.m_sec < 10){
+		ajusteS = "0";
+	}
+	flux << ajusteH << p_heure.m_heure << ":" << ajusteM << p_heure.m_min << ":" << ajusteS << p_heure.m_sec;
 
 	return flux;
 }

@@ -141,7 +141,7 @@ double Station::distance(const Station& p_station) const {
  */
 std::ostream & operator<<(std::ostream& flux, const Station& p_station)
 {
-	flux << p_station.getId() << " - " << p_station.getDescription();
+	flux << p_station.getId() << " - " << p_station.getNom();
 
 	return flux;
 }

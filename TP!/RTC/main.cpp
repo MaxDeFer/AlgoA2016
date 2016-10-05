@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include <iomanip>
 #include "Coordonnees.h"
 #include <vector>
@@ -20,6 +21,7 @@ using namespace std;
 int main()
 {
 	double chrono0=clock();
+
 
 
 
@@ -97,9 +99,9 @@ int main()
 	}
 
 */
-
+	//Code chargeant les arrets dans les voyages et les voyages dans les lignes
 	vector<vector<string>> vFichier;
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stop_times.txt", vFichier, ',', 1);
+	lireFichier("stop_times.txt", vFichier, ',', 1);
 
 
 
@@ -122,7 +124,7 @@ int main()
 	double chrono2 = clock();
 	cout<<"Temps apres Arret:"<<(chrono2-chrono0)/1000000<<endl;
 
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/routes.txt", vFichier, ',', 1);
+	lireFichier("routes.txt", vFichier, ',', 1);
 
 	vector<Ligne> vLigne;
 
@@ -134,7 +136,7 @@ int main()
 
 	vFichier.clear();
 
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/stops.txt", vFichier, ',', 1);
+	lireFichier("stops.txt", vFichier, ',', 1);
 
 	vector<Station> vStation;
 
@@ -149,7 +151,7 @@ int main()
 	double chrono3 = clock();
 	cout<<"Temps avant LA boucle:"<<(chrono3 - chrono0)/1000000<<endl;
 
-	lireFichier("/home/etudiant/Bureau/Algo/TP1/AlgoA2016/TP!/RTC/trips.txt", vFichier, ',', 1);
+	lireFichier("trips.txt", vFichier, ',', 1);
 
 	for (int i=0; i<vLigne.size(); i++)
 	{
@@ -179,8 +181,36 @@ int main()
 	vFichier.clear();
 
 	double chrono1=clock();
-
+	ofstream toFile;
+	Date aujourdhui = Date();
+	Heure maintenant = Heure();
+	toFile.open("test.txt");
 	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000000<<" secondes"<<endl;
+	toFile << "Chargement des données terminé en "
+			<<  (chrono1 - chrono0)/1000000<<" secondes"<<endl
+			<< "===================" << endl
+			<< "Ligne de la RTC" << endl
+			<< "Compte = " << vLigne.size() << endl
+			<< "===================" << endl;
+	for (int z=0 ; z < vLigne.size(); z++){
+		toFile << vLigne[z] << endl;
+	}
+	toFile << "===================" << endl
+			<< "Stations de la RTC" << endl
+			<< "Compte = " << vStation.size() << endl
+			<< "===================" << endl;
+
+	for (int z=0 ; z < vStation.size(); z++){
+		toFile << vStation[z] << endl;
+	}
+	toFile << "===================" << endl
+			<< "Voyage de la journée du " << aujourdhui << endl << now << "-" << then << endl
+			<< "Compte = " << vArret.size() << endl
+			<< "===================" << endl;
+	for (int z=0 ; z < vArret.size(); z++){
+		toFile << vLigne[z].getVoyages()[1] << endl;
+	}
+	toFile.close();
 
 
 
