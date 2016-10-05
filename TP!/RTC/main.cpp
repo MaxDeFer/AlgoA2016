@@ -204,11 +204,41 @@ int main()
 		toFile << vStation[z] << endl;
 	}
 	toFile << "===================" << endl
-			<< "Voyage de la journée du " << aujourdhui << endl << now << "-" << then << endl
-			<< "Compte = " << vArret.size() << endl
+			<< "Voyage de la journée du " << aujourdhui << endl << now << "-" << then << endl;
+			vector<Voyage> voyageNow;
+			string serviceNow;
+			lireFichier("calendar_dates.txt", vFichier, ',', 1);
+			for (int i = 0; i<vFichier.size(); i++)
+			{
+				Date calDate(stoi(vFichier[i][1].substr(0,4)),
+						stoi(vFichier[i][1].substr(4,2)),
+						stoi(vFichier[i][1].substr(6,2)));
+				if (calDate == aujourdhui)
+				{
+					serviceNow = vFichier[i][0];
+				}
+			}
+			for (int i = 0; i<vLigne.size(); i++)
+			{
+				for (int j = 0; j<vLigne[i].getVoyages().size(); j++)
+				{
+					if (vLigne[i].getVoyages()[j]->getServiceId() == serviceNow)
+					{
+					voyageNow.push_back(*(vLigne[i].getVoyages()[j]));
+					}
+				}
+			}
+			cout<< "Compte = " << voyageNow.size() << endl
 			<< "===================" << endl;
-	for (int z=0 ; z < vArret.size(); z++){
-		toFile << vLigne[z].getVoyages()[1] << endl;
+	for (int z=0 ; z < voyageNow.size(); z++){
+		toFile << voyageNow[z].getLigne()->getNumero()<<": Vers "
+				<< voyageNow[z].getDestination() << endl;
+		for (int y = 0; y<voyageNow[z].getArrets().size(); y++)
+		{
+			toFile << voyageNow[z].getArrets()[y].getHeureDepart()
+					<<" - "<<voyageNow[z].getArrets()[y].getStationId()<<endl;
+		}
+
 	}
 	toFile.close();
 
