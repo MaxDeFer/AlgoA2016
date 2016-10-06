@@ -15,11 +15,14 @@
 #include "Ligne.h"
 #include "Station.h"
 #include "Voyage.h"
+#include <algorithm>
 using namespace std;
 
 
 int main()
 {
+
+
 	double chrono0=clock();
 
 	//Code chargeant les arrets dans les voyages et les voyages dans les lignes
@@ -90,15 +93,16 @@ int main()
 						arretVoyage.push_back(vArret[k]);
 					}
 				}
+
 				if(arretVoyage.size() > 1)
 				{
 				voyage.setArrets(arretVoyage);
 				arretVoyage.clear();
 				vVoyage.push_back(voyage);
 				int waouh = vVoyage.size()-1;
-				cout<<&vVoyage[waouh]<<endl;
+				cout<<vVoyage[waouh]<<endl;
 				vLigne[i].addVoyage(&(vVoyage[waouh]));
-				cout<<vLigne[i].getVoyages().size()<<endl;
+				//cout<<vLigne[i].getVoyages().size()<<endl;
 				}
 			}
 		}
@@ -108,7 +112,7 @@ int main()
 	double chrono1=clock();
 	ofstream toFile;
 	Date aujourdhui = Date();
-	Heure maintenant = Heure();
+
 	toFile.open("test.txt");
 	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000000<<" secondes"<<endl;
 	toFile << "Chargement des données terminé en "
@@ -118,6 +122,7 @@ int main()
 			<< "Compte = " << vLigne.size() << endl
 			<< "===================" << endl;
 	for (int z=0 ; z < vLigne.size(); z++){
+
 		toFile << vLigne[z] << endl;
 	}
 	toFile << "===================" << endl
@@ -131,26 +136,51 @@ int main()
 	toFile << "===================" << endl
 			<< "Voyage de la journée du " << aujourdhui << endl << now << "-" << then << endl;
 			vector<Voyage> voyageNow;
-			string serviceNow;
+			vector<string> serviceNow;
+			vector<Arret> arretThing;
 
-			lireFichier("calendar_dates.txt", vFichier, ',', 1);
-			for (int i = 0; i<vFichier.size(); i++)
-			{
-				Date calDate(stoi(vFichier[i][1].substr(0,4)),
-						stoi(vFichier[i][1].substr(4,2)),
-						stoi(vFichier[i][1].substr(6,2)));
-				if (calDate == aujourdhui)
-				{
-					serviceNow = vFichier[i][0];
+
+	lireFichier("calendar_dates.txt", vFichier, ',', 1);
+	for (int i = 0; i<vFichier.size(); i++)
+	{
+		Date calDate(stoi(vFichier[i][1].substr(0,4)),
+				stoi(vFichier[i][1].substr(4,2)),
+				stoi(vFichier[i][1].substr(6,2)));
+		if (calDate == aujourdhui)
+		{
+			serviceNow.push_back(vFichier[i][0]);
+		}
+
+	}
+
+
+		for (int z=0 ; z < vVoyage.size(); z++){
+			cout << "fuuuuuuuuck";
+			if(std::find(serviceNow.begin(), serviceNow.end(), vVoyage[z].getServiceId() ) != serviceNow.end()) {
+				toFile << vVoyage[z] << endl;
+				for (int y=0 ; y < vVoyage[z].getArrets().size(); y++){
+
+					arretThing.push_back(vVoyage[z].getArrets()[y]);
+					sort(arretThing.begin(), arretThing.end());
+					toFile << arretThing[y] << endl;
+					arretThing.clear();
+
 				}
 			}
-			cout<<serviceNow<<" : "<<((vLigne[0].getVoyages())[0]->getServiceId())<<endl;
+
+		}
+
+
+
+
+
+			/*cout<<serviceNow<<" : "<<((vLigne[0].getVoyages())[0]->getServiceId())<<endl;
 
 			for (int i = 0; i<vLigne.size(); i++)
 			{
 				for (int j = 0; j<vLigne[i].getVoyages().size(); j++)
 				{
-					if ((vLigne[i].getVoyages()[j])->getServiceId() == serviceNow)
+					if (vVoyage[j].getId() == serviceNow)
 					{
 					voyageNow.push_back(*(vLigne[i].getVoyages()[j]));
 					}
@@ -167,8 +197,9 @@ int main()
 					<<" - "<<voyageNow[z].getArrets()[y].getStationId()<<endl;
 		}
 
-	}
+	}*/
 	toFile.close();
+
 
 
 
@@ -177,4 +208,5 @@ int main()
 
 
 }
+
 

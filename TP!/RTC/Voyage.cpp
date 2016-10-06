@@ -188,7 +188,7 @@ bool Voyage::operator >(const Voyage& p_other) const {
  */
 std::ostream & operator<<(std::ostream & flux, const Voyage & p_voyage)
 {
-	flux << p_voyage.getId() << ": Vers" << p_voyage.getDestination();
+	flux << p_voyage.getLigne()->getNumero() << ": Vers" << p_voyage.getDestination();
 
 	return flux;
 }
