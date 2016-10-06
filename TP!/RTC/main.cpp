@@ -130,97 +130,8 @@ int main()
 
 	double chrono1=clock();
 
-/*
-	double chrono0=clock();
-
-	//Code chargeant les arrets dans les voyages et les voyages dans les lignes
-	vector<vector<string>> vFichier;
-	lireFichier("stop_times.txt", vFichier, ',', 1);
-
-
-
-	vector<Arret> vArret;
-	Heure now;
-	Heure then = now.add_secondes(3600);
-
-	for (int i=0;i<vFichier.size();i++)
-	{
-		Arret arret(vFichier[i]);
-		if (now<arret.getHeureDepart() &&
-			arret.getHeureDepart()<then)
-		{
-		vArret.push_back(arret);
-		}
-	}
-
-	vFichier.clear();
-
-	lireFichier("routes.txt", vFichier, ',', 1);
-
-	vector<Ligne> vLigne;
-
-	for (int i=0;i<vFichier.size();i++)
-		{
-			Ligne ligne(vFichier[i]);
-			vLigne.push_back(ligne);
-		}
-
-	vFichier.clear();
-
-	lireFichier("stops.txt", vFichier, ',', 1);
-
-	vector<Station> vStation;
-
-	for (int i=0;i<vFichier.size();i++)
-			{
-				Station station(vFichier[i]);
-				vStation.push_back(station);
-			}
-
-	vFichier.clear();
-
-	double chrono3 = clock();
-
-	lireFichier("trips.txt", vFichier, ',', 1);
-
-	vector<Voyage> vVoyage;
-
-	vector<Arret> arretVoyage;
-	for (int i=0; i<vLigne.size(); i++)
-	{
-		for (int j=0; j<vFichier.size(); j++)
-		{
-			Voyage voyage(vFichier[j],&vLigne[i]);
-			if (vLigne[i].getId() == stoi(vFichier[j][0]))
-			{
-				for (int k = 0; k<vArret.size(); k++)
-				{
-					if (vArret[k].getVoyageId() == voyage.getId())
-					{
-						//cout<<"Found!"<<endl;
-						arretVoyage.push_back(vArret[k]);
-					}
-				}
-
-				if(arretVoyage.size() > 1)
-				{
-				voyage.setArrets(arretVoyage);
-				arretVoyage.clear();
-				vVoyage.push_back(voyage);
-				int waouh = vVoyage.size()-1;
-				cout<<vVoyage[waouh]<<endl;
-				vLigne[i].addVoyage(&(vVoyage[waouh]));
-				//cout<<vLigne[i].getVoyages().size()<<endl;
-				}
-			}
-		}
-	}
-
-	vFichier.clear();
-	double chrono1=clock();
 	ofstream toFile;
 	Date aujourdhui = Date();
-
 	toFile.open("test.txt");
 	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000000<<" secondes"<<endl;
 	toFile << "Chargement des données terminé en "
@@ -229,6 +140,7 @@ int main()
 			<< "Ligne de la RTC" << endl
 			<< "Compte = " << vLigne.size() << endl
 			<< "===================" << endl;
+
 	for (int z=0 ; z < vLigne.size(); z++){
 
 		toFile << vLigne[z] << endl;
@@ -237,15 +149,15 @@ int main()
 			<< "Stations de la RTC" << endl
 			<< "Compte = " << vStation.size() << endl
 			<< "===================" << endl;
-
+	cout << vVoyage[0].getArrets()[2];
 	for (int z=0 ; z < vStation.size(); z++){
 		toFile << vStation[z] << endl;
 	}
 	toFile << "===================" << endl
-			<< "Voyage de la journée du " << aujourdhui << endl << now << "-" << then << endl;
+			<< "Voyage de la journée du " << aujourdhui << endl << now << "-" << then << endl
+			<< "Compte = " << vVoyage.size();
 			vector<Voyage> voyageNow;
 			vector<string> serviceNow;
-			vector<Arret> arretThing;
 
 
 	lireFichier("calendar_dates.txt", vFichier, ',', 1);
@@ -260,18 +172,16 @@ int main()
 		}
 
 	}
-
+	cout << vVoyage[0].getArrets()[2];
 
 		for (int z=0 ; z < vVoyage.size(); z++){
 			if(std::find(serviceNow.begin(), serviceNow.end(), vVoyage[z].getServiceId() ) != serviceNow.end()) {
 				toFile << vVoyage[z] << endl;
+
 				for (int y=0 ; y < vVoyage[z].getArrets().size(); y++){
+					if (vVoyage[z].getArrets()[y].getHeureDepart()>now && vVoyage[z].getArrets()[y].getHeureDepart()<then)
 
-					arretThing.push_back(vVoyage[z].getArrets()[y]);
-					sort(arretThing.begin(), arretThing.end());
-					toFile << arretThing[y] << endl;
-					arretThing.clear();
-
+				toFile << vVoyage[z].getArrets()[y] << endl;
 				}
 			}
 
@@ -281,31 +191,9 @@ int main()
 
 
 
-			/*cout<<serviceNow<<" : "<<((vLigne[0].getVoyages())[0]->getServiceId())<<endl;
+	toFile.close();
 
-			for (int i = 0; i<vLigne.size(); i++)
-			{
-				for (int j = 0; j<vLigne[i].getVoyages().size(); j++)
-				{
-					if (vVoyage[j].getId() == serviceNow)
-					{
-					voyageNow.push_back(*(vLigne[i].getVoyages()[j]));
-					}
-				}
-			}
-			cout<< "Compte = " << voyageNow.size() << endl
-			<< "===================" << endl;
-	for (int z=0 ; z < voyageNow.size(); z++){
-		toFile << voyageNow[z].getLigne()->getNumero()<<": Vers "
-				<< voyageNow[z].getDestination() << endl;
-		for (int y = 0; y<voyageNow[z].getArrets().size(); y++)
-		{
-			toFile << voyageNow[z].getArrets()[y].getHeureDepart()
-					<<" - "<<voyageNow[z].getArrets()[y].getStationId()<<endl;
-		}
 
-	}*/
-//	toFile.close();
 
 
 
@@ -313,5 +201,3 @@ int main()
 
 
 }
-
-
