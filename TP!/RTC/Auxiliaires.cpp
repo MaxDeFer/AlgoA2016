@@ -196,9 +196,9 @@ Heure::Heure(unsigned int heure, unsigned int min, unsigned int sec):m_heure(heu
 }
 
 Heure Heure::add_secondes(unsigned int secs) const {
-	unsigned int nouvelleHeure;
-	unsigned int nouvelleMin;
-	unsigned int nouvelleSec;
+	unsigned int nouvelleHeure = m_heure;
+	unsigned int nouvelleMin= m_min;
+	unsigned int nouvelleSec= m_sec;
 
 	nouvelleSec = this->m_sec + secs;
 
@@ -207,11 +207,13 @@ Heure Heure::add_secondes(unsigned int secs) const {
 		nouvelleMin = nouvelleSec/60 + this->m_min;
 		nouvelleSec = nouvelleSec%60;
 	}
+
 	if (nouvelleMin > 59)
 	{
 		nouvelleHeure = nouvelleMin/60 + this->m_heure;
 		nouvelleMin = nouvelleMin%60;
 	}
+
 	if (nouvelleHeure > 29)
 	{
 		nouvelleHeure = nouvelleHeure%30;

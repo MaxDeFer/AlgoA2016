@@ -21,7 +21,6 @@ using namespace std;
 
 int main()
 {
-
 	double chrono0 = clock();
 	Heure now;
 	Heure then = now.add_secondes(3600);
@@ -161,10 +160,7 @@ int main()
 			toFile << vVoyage[z] << endl;
 			for (int y=0 ; y < vVoyage[z].getArrets().size(); y++)
 			{
-				if(now<vVoyage[z].getArrets()[y].getHeureDepart() && vVoyage[z].getArrets()[y].getHeureDepart()<then)
-				{
 				toFile << vVoyage[z].getArrets()[y] << endl;
-				}
 			}
 			}
 	}
@@ -183,3 +179,4 @@ int main()
 
 
 }
+

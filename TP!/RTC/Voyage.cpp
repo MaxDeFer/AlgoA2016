@@ -142,33 +142,23 @@ Heure Voyage::getHeureFin() const {
  */
 void Voyage::setArrets(std::vector<Arret>& resultat) {
 
-	std::sort(resultat.begin(),resultat.end());
-	if (resultat.size() > 1)
-	{
-
-
-	for (unsigned i = 0; i < resultat.size() - 1; i++)
-	{
-		for (unsigned j=0; j<resultat.size(); j++)
-		{
-		if (resultat[i].getHeureDepart() == resultat[j].getHeureDepart() &&
-				resultat[i].getNumeroSequence() < resultat[j].getNumeroSequence())
-
-		{
-			resultat[j].setHeureDepart((resultat[j].getHeureDepart()).add_secondes(30));
-
-		}
-
-		if (resultat[i].getHeureArrivee() == resultat[j].getHeureArrivee() &&
-				resultat[i].getNumeroSequence() < resultat[j].getNumeroSequence())
-		{
-			resultat[j].setHeureArrivee((resultat[j].getHeureArrivee()).add_secondes(30));
-		}
-		}
-	}
-	}
-
 	m_arrets = resultat;
+	std::sort(m_arrets.begin(),m_arrets.end());
+	Heure changeHeure;
+	if (m_arrets.size() > 1)
+	{
+	for (unsigned i = 1; i < m_arrets.size(); i++)
+	{
+		if (m_arrets[i-1].getHeureDepart() == m_arrets[i].getHeureDepart())
+		{
+			changeHeure = m_arrets[i].getHeureDepart().add_secondes(30);
+			m_arrets[i].setHeureDepart(changeHeure);
+			changeHeure = m_arrets[i].getHeureArrivee().add_secondes(30);
+			m_arrets[i].setHeureArrivee(changeHeure);
+		}
+	}
+	}
+
 }
 /**
  * \brief Méthode de surcharge de comparateur "Plus petit que" entre deux voyages en se basant sur l'heure de départ
