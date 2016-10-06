@@ -143,7 +143,8 @@ Heure Voyage::getHeureFin() const {
 void Voyage::setArrets(std::vector<Arret>& resultat) {
 
 	m_arrets = resultat;
-	std::sort(m_arrets.begin(),m_arrets.end());
+	if (m_arrets.size() > 1)
+	{
 
 	for (unsigned i = 0; i < m_arrets.size() - 2; i++)
 	{
@@ -158,6 +159,7 @@ void Voyage::setArrets(std::vector<Arret>& resultat) {
 		{
 			m_arrets[i+1].setHeureArrivee((m_arrets[i+1].getHeureArrivee()).add_secondes(30));
 		}
+	}
 	}
 }
 /**
