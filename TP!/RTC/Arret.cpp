@@ -115,13 +115,13 @@ void Arret::setVoyageId(const std::string& voyageId) {
  */
 
 bool Arret::operator <(const Arret& p_other) const {
+	bool vrai = 0;
 
-	if (m_numero_sequence < p_other.getNumeroSequence()){
-		return true;
-	}
-	else{
-		return false;
-	}
+		if (m_numero_sequence < p_other.getNumeroSequence())
+		{
+			vrai = 1;
+		}
+		return vrai;
 }
 
 /**
@@ -130,13 +130,13 @@ bool Arret::operator <(const Arret& p_other) const {
  * \return Un booléen correspondant au résultat
  */
 bool Arret::operator >(const Arret& p_other) const {
+	bool vrai = 0;
 
-	if (m_numero_sequence > p_other.getNumeroSequence()){
-		return true;
+	if (m_numero_sequence > p_other.getNumeroSequence())
+	{
+		vrai = 1;
 	}
-	else{
-		return false;
-	}
+	return vrai;
 
 }
 
@@ -148,7 +148,7 @@ bool Arret::operator >(const Arret& p_other) const {
  */
 std::ostream & operator<<(std::ostream& f, const Arret& p_arret)
 {
-	f << p_arret.getHeureArrivee() <<  " - " << p_arret.getStationId();
+	f << p_arret.getHeureDepart() <<  " - " << p_arret.getStationId();
 
 	return f;
 }

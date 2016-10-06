@@ -248,13 +248,13 @@ bool Heure::operator <(const Heure& other) const {
 		vrai = 1;
 	}
 
-	if (this->m_heure == other.m_heure &&
+	else if (this->m_heure == other.m_heure &&
 		this->m_min < other.m_min)
 	{
 		vrai = 1;
 	}
 
-	if (this->m_heure == other.m_heure &&
+	else if (this->m_heure == other.m_heure &&
 		this->m_min == other.m_min &&
 		this->m_sec < other.m_sec)
 	{
@@ -275,13 +275,13 @@ bool Heure::operator >(const Heure& other) const {
 			vrai = 1;
 		}
 
-		if (this->m_heure == other.m_heure &&
+		else if (this->m_heure == other.m_heure &&
 			this->m_min > other.m_min)
 		{
 			vrai = 1;
 		}
 
-		if (this->m_heure == other.m_heure &&
+		else if (this->m_heure == other.m_heure &&
 			this->m_min == other.m_min &&
 			this->m_sec > other.m_sec)
 		{
@@ -303,13 +303,13 @@ bool Heure::operator <=(const Heure& other) const {
 		vrai = 1;
 	}
 
-	if (this->m_heure == other.m_heure &&
+	else if (this->m_heure == other.m_heure &&
 		this->m_min < other.m_min)
 	{
 		vrai = 1;
 	}
 
-	if (this->m_heure == other.m_heure &&
+	else if (this->m_heure == other.m_heure &&
 		this->m_min == other.m_min &&
 		this->m_sec <= other.m_sec)
 	{
@@ -330,13 +330,13 @@ bool Heure::operator >=(const Heure& other) const {
 				vrai = 1;
 			}
 
-			if (this->m_heure == other.m_heure &&
+			else if (this->m_heure == other.m_heure &&
 				this->m_min > other.m_min)
 			{
 				vrai = 1;
 			}
 
-			if (this->m_heure == other.m_heure &&
+			else if (this->m_heure == other.m_heure &&
 				this->m_min == other.m_min &&
 				this->m_sec >= other.m_sec)
 			{

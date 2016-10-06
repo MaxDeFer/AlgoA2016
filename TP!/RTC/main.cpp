@@ -86,12 +86,9 @@ int main()
 	for (int i=0; i<vFichier.size(); i++)
 	{
 		Arret unArret(vFichier[i]);
-		if (now<unArret.getHeureDepart())
+		if (now<unArret.getHeureDepart() && unArret.getHeureDepart()<then)
 		{
-			if (unArret.getHeureDepart()<then)
-			{
 				vArret.push_back(unArret);
-			}
 		}
 	}
 
@@ -112,8 +109,8 @@ int main()
 		arretVoyage.clear();
 
 	}
-	vFichier.clear();
 
+	vFichier.clear();
 
 
 	lireFichier("stops.txt", vFichier, ',', 1);
@@ -149,43 +146,28 @@ int main()
 			<< "Stations de la RTC" << endl
 			<< "Compte = " << vStation.size() << endl
 			<< "===================" << endl;
-	cout << vVoyage[0].getArrets()[2];
+
 	for (int z=0 ; z < vStation.size(); z++){
 		toFile << vStation[z] << endl;
 	}
 	toFile << "===================" << endl
 			<< "Voyage de la journée du " << aujourdhui << endl << now << "-" << then << endl
 			<< "Compte = " << vVoyage.size();
-			vector<Voyage> voyageNow;
-			vector<string> serviceNow;
 
-
-	lireFichier("calendar_dates.txt", vFichier, ',', 1);
-	for (int i = 0; i<vFichier.size(); i++)
+	for (int z=0 ; z < vVoyage.size(); z++)
 	{
-		Date calDate(stoi(vFichier[i][1].substr(0,4)),
-				stoi(vFichier[i][1].substr(4,2)),
-				stoi(vFichier[i][1].substr(6,2)));
-		if (calDate == aujourdhui)
-		{
-			serviceNow.push_back(vFichier[i][0]);
-		}
-
-	}
-	cout << vVoyage[0].getArrets()[2];
-
-		for (int z=0 ; z < vVoyage.size(); z++){
-			if(std::find(serviceNow.begin(), serviceNow.end(), vVoyage[z].getServiceId() ) != serviceNow.end()) {
-				toFile << vVoyage[z] << endl;
-
-				for (int y=0 ; y < vVoyage[z].getArrets().size(); y++){
-					if (vVoyage[z].getArrets()[y].getHeureDepart()>now && vVoyage[z].getArrets()[y].getHeureDepart()<then)
-
+			if (vVoyage[z].getArrets().size())
+			{
+			toFile << vVoyage[z] << endl;
+			for (int y=0 ; y < vVoyage[z].getArrets().size(); y++)
+			{
+				if(now<vVoyage[z].getArrets()[y].getHeureDepart() && vVoyage[z].getArrets()[y].getHeureDepart()<then)
+				{
 				toFile << vVoyage[z].getArrets()[y] << endl;
 				}
 			}
-
-		}
+			}
+	}
 
 
 
