@@ -12,6 +12,21 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 		m_lignes[maLigne.getId()]=maLigne;
 	}
 
+	lireFichier(chemin_dossier+"trips.txt",resultats, ',', 1 );
+
+	for (unsigned int i = 0;i<resultats.size(); i++)
+	{
+		for (map<int, Ligne>::iterator itr = m_lignes.begin(); itr!=m_lignes.end(); itr++)
+		{
+			if (itr->second.getId() == stoi(resultats[i][0]))
+			{
+				Voyage monVoyage(resultats[i] ,&(m_lignes[stoi(resultats[i][0])]));
+				m_voyages[monVoyage.getServiceId()]=monVoyage;
+				itr->second.addVoyage(&m_voyages[monVoyage.getServiceId()]);
+			}
+		}
+	}
+
 	lireFichier(chemin_dossier+"stops.txt",resultats, ',', 1 );
 
 	for (vector<vector<string>>::iterator itr = resultats.begin(); itr != resultats.end(); itr++)
@@ -20,22 +35,15 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 		m_stations[maStation.getId()]=maStation;
 	}
 
-	lireFichier(chemin_dossier+"trips.txt",resultats, ',', 1 );
-
-	for (unsigned int i = 0;i<resultats.size(); i++)
-	{
-		Voyage monVoyage(resultats[i] ,&(m_lignes[stoi(resultats[i][0])]));
-		m_voyages[monVoyage.getServiceId()]=monVoyage;
-	}
-
 	lireFichier(chemin_dossier+"calendar_dates.txt",resultats, ',', 1 );
 
 	for (unsigned int i = 0;i<resultats.size(); i++)
 	{
-		Date maDate(stoi(resultats[i][1].substr(0,4)),
-				stoi(resultats[i][1].substr(4,2)),
-				stoi(resultats[i][1].substr(6,2)));
-		m_voyages_date[maDate] = &m_voyages[resultats[i][0]];
+		Date calDate(stoi(resultats[i][1].substr(0,4)),
+						stoi(resultats[i][1].substr(4,2)),
+						stoi(resultats[i][1].substr(6,2)));
+
+		m_voyages_date[Date] = &m_voyages[resultats[i][0]];
 	}
 
 	lireFichier(chemin_dossier+"stop_times.txt",resultats, ',', 1 );
@@ -51,7 +59,7 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 bool Gestionnaire::date_est_prise_en_charge(const Date& date) {
 
 	bool estPresent=0;
-	m_voyages_date.count(date)> 0 ? estPresent = 1 : estPresent = 0;
+	m_voyages_date.count(date) > 0 ? estPresent = 1 : estPresent = 0;
 
 	return estPresent;
 
@@ -137,6 +145,8 @@ std::vector<std::pair<double, Station*> > Gestionnaire::trouver_stations_environ
 
 std::vector<Heure> Gestionnaire::trouver_horaire(Date date, Heure heure,
 		std::string numero_ligne, int station_id, std::string destination) {
+	vector<Heure> vectHeure;
+
 
 }
 

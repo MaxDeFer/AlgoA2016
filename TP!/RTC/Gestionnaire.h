@@ -70,7 +70,7 @@ private:
 	std::map<int, Ligne> m_lignes;
 	std::map<int, Station> m_stations;
 	std::map<std::string, Voyage> m_voyages;
-	std::map<Date, Voyage*> m_voyages_date;
+	std::multimap<Date, Voyage*> m_voyages_date;
 	std::map<int, Arret> m_arrets;
 
 	void initialiser_reseau(Date date, Heure heure_depart, Heure heure_fin, Coordonnees depart, Coordonnees dest,
