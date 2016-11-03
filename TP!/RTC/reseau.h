@@ -22,6 +22,7 @@ typedef std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int> >
  * Les entre les sommets arcs sont tous identifiés par poids positif ou nul, et un type qui est aussi un entier positif.
  *
  */
+
 class Reseau
 {
 public:

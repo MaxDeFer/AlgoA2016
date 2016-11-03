@@ -11,6 +11,7 @@
 #include "Voyage.h"
 #include "reseau.h"
 #include "Auxiliaires.h"
+#include <map>
 
 const double vitesse_de_marche = 5.0; /*! vitesse moyenne de marche d'un humain selon wikipedia */
 
@@ -64,6 +65,11 @@ public:
 private:
 	Reseau m_reseau;
 
+	std::vector<std::vector<std::string>> resultats;
+	std::map<int, Ligne> m_lignes;
+	std::map<int, Station> m_stations;
+	std::map<std::string, Voyage> m_voyages;
+	std::map<Date, Voyage*> m_voyages_date;
 
 	void initialiser_reseau(Date date, Heure heure_depart, Heure heure_fin, Coordonnees depart, Coordonnees dest,
 			double dist_de_marche=distance_max_initiale, double dist_transfert=distance_max_transfert);

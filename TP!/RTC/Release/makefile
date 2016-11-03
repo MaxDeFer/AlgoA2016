@@ -8,9 +8,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include TP!/RTC/Release/subdir.mk
--include TP!/RTC/Debug/subdir.mk
--include TP!/RTC/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -40,19 +37,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: AlgoA2016
+all: RTC
 
 # Tool invocations
-AlgoA2016: $(OBJS) $(USER_OBJS)
+RTC: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++  -o "AlgoA2016" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++  -o "RTC" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) AlgoA2016
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) RTC
 	-@echo ' '
 
 .PHONY: all clean dependents
