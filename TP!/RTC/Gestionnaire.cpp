@@ -1,5 +1,6 @@
 #include "Gestionnaire.h"
 #include "Auxiliaires.h"
+#include <algorithm>
 using namespace std;
 
 Gestionnaire::Gestionnaire(std::string chemin_dossier) {
@@ -21,8 +22,8 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 			if (itr->second.getId() == stoi(resultats[i][0]))
 			{
 				Voyage monVoyage(resultats[i] ,&(m_lignes[stoi(resultats[i][0])]));
-				m_voyages[monVoyage.getServiceId()]=monVoyage;
-				itr->second.addVoyage(&m_voyages[monVoyage.getServiceId()]);
+				m_voyages[monVoyage.getId()]=monVoyage;
+				itr->second.addVoyage(&m_voyages[monVoyage.getId()]);
 			}
 		}
 	}
@@ -39,11 +40,18 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 
 	for (unsigned int i = 0;i<resultats.size(); i++)
 	{
-		Date calDate(stoi(resultats[i][1].substr(0,4)),
+		Date date(stoi(resultats[i][1].substr(0,4)),
 						stoi(resultats[i][1].substr(4,2)),
 						stoi(resultats[i][1].substr(6,2)));
+		for (map<std::string, Voyage>::iterator itr = m_voyages.begin(); itr!=m_voyages.end(); itr++)
+		{
+			if (itr->second.getServiceId() == resultats[i][0])
+			{
+			m_voyages_date.insert(pair<Date, Voyage*>(date,&(itr->second)));
+			}
+		}
 
-		m_voyages_date[Date] = &m_voyages[resultats[i][0]];
+
 	}
 
 	lireFichier(chemin_dossier+"stop_times.txt",resultats, ',', 1 );
@@ -52,6 +60,24 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 	{
 		Arret monArret(resultats[i]);
 		m_arrets[monArret.getStationId()]=monArret;
+	}
+
+	vector<Arret> arretVoyage;
+	for (map<std::string, Voyage>::iterator itr = m_voyages.begin(); itr!=m_voyages.end(); itr++)
+	{
+		for (map<int, Arret>::iterator itr2 = m_arrets.begin(); itr2!=m_arrets.end(); itr2++)
+		{
+			if (itr->second.getId() == itr2->second.getVoyageId())
+			{
+						arretVoyage.push_back(itr2->second);
+			}
+
+
+
+		}
+		itr->second.setArrets(arretVoyage);
+		arretVoyage.clear();
+
 	}
 
 }
@@ -146,8 +172,23 @@ std::vector<std::pair<double, Station*> > Gestionnaire::trouver_stations_environ
 std::vector<Heure> Gestionnaire::trouver_horaire(Date date, Heure heure,
 		std::string numero_ligne, int station_id, std::string destination) {
 	vector<Heure> vectHeure;
-
-
+	vector<Voyage*> vectVoy = m_lignes[stoi(numero_ligne)].getVoyages();
+	vector<Arret> vectArr;
+	for (vector<Voyage*>::iterator itr = vectVoy.begin(); itr!=vectVoy.end(); itr++)
+	{
+		if ((*itr)->getDestination() == destination)
+		{
+			vectArr = (*itr)->getArrets();
+			for (vector<Arret>::iterator itr2 = vectArr.begin(); itr2!=vectArr.end(); itr2++)
+			{
+				if (itr2->getHeureDepart()>heure)
+				{
+					vectHeure.push_back(itr2->getHeureDepart());
+				}
+			}
+		}
+	}
+	return vectHeure;
 }
 
 bool Gestionnaire::reseau_est_fortement_connexe(Date date, Heure heure_debut,
@@ -166,6 +207,41 @@ std::vector<unsigned int> Gestionnaire::plus_court_chemin(Date date,
 void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 		Heure heure_fin, Coordonnees depart, Coordonnees dest,
 		double dist_de_marche, double dist_transfert) {
+	vector<string> v ={"0","", "", "","" };
+	Station stationDepart(v);
+	stationDepart.setCoords(depart);
+	v[0] = "1";
+	Station stationDest(v);
+	stationDest.setCoords(dest);
+	m_reseau.ajouterSommet(stationDepart.getId());
+	m_reseau.ajouterSommet(stationDest.getId());
+	vector<pair<double, Station*>> stationMarche = this->trouver_stations_environnantes(stationDepart.getCoords(), dist_de_marche);
+	for (vector<pair<double, Station*>>::iterator itr = stationMarche.begin(); itr!=stationMarche.end(); itr++)
+	{
+		m_reseau.ajouterSommet(itr->second->getId());
+		if (!(m_reseau.arcExiste(0,itr->second->getId())))
+		{
+			m_reseau.ajouterArc(0,itr->second->getId(), itr->first, 1);
+		}
+	}
+
+	for (map<std::string, Voyage>::iterator itr = m_voyages.begin(); itr!= m_voyages.end(); itr++)
+	{
+		for (vector<Arret>::iterator itr2= itr->second.getArrets().begin(); itr2 != itr->second.getArrets().end(); itr2++)
+		{
+			if(itr2->getHeureDepart()>heure_depart && itr2->getHeureDepart() < heure_fin)
+			{
+			m_reseau.ajouterSommet(itr2->getStationId());
+			if(!(m_reseau.arcExiste((itr2-1)->getStationId(), itr2->getStationId())) &&
+				itr2 != itr->second.getArrets().begin())
+			{
+				int station1 = (itr2-1)->getStationId();
+				int station2 = itr2->getStationId();
+				m_reseau.ajouterArc(station1, station2, (m_stations[station2].getCoords()- m_stations[station1].getCoords()));
+			}
+			}
+		}
+	}
 }
 /*
  * Gestionnaire.cpp
