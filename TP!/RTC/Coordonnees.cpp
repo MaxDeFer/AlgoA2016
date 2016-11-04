@@ -84,11 +84,11 @@ double Coordonnees::operator- (const Coordonnees & other) const
 {
 	const double PI = 3.141592653589793;
 	double distance;
-	double thisLong = this->getLongitude();
+	double thisLong = this->getLongitude()*PI/180;
 	double thisLat = this->getLatitude()*PI/180;
 	double otherLong = other.getLongitude()*PI/180;
 	double otherLat = other.getLatitude()*PI/180;
-	distance = 2*6371*(asin(sqrt(pow(sin((otherLat-thisLat)/2)+cos(thisLat)*cos(otherLat),2)*(pow(sin((otherLong-thisLong)/2),2)))));
+	distance = 6367445*acos(sin(thisLat)*sin(otherLat)+cos(thisLat)*cos(otherLat)*cos(thisLong-otherLong));
 	return distance;
 }
 
