@@ -88,7 +88,7 @@ double Coordonnees::operator- (const Coordonnees & other) const
 	double thisLat = this->getLatitude()*PI/180;
 	double otherLong = other.getLongitude()*PI/180;
 	double otherLat = other.getLatitude()*PI/180;
-	distance = 6367445*acos(sin(thisLat)*sin(otherLat)+cos(thisLat)*cos(otherLat)*cos(thisLong-otherLong));
+	distance = 6367.445*acos(sin(thisLat)*sin(otherLat)+cos(thisLat)*cos(otherLat)*cos(thisLong-otherLong));
 	return distance;
 }
 

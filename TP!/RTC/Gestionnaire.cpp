@@ -135,19 +135,28 @@ Station Gestionnaire::getStation(int station_id) {
 
 std::pair<std::string, std::string> Gestionnaire::get_bus_destinations(
 		int station_id, std::string num_ligne) {
+	pair<string,string> pairRetour("","");
 
-	for (map<int, Arret>::iterator itr = m_arrets.begin(); itr!= m_arrets.end(); itr++)
-		if(station_id  == itr->second.getStationId())
+	for(vector<Voyage*>::iterator itr = m_lignes[stoi(num_ligne)].getVoyages().begin(); itr != m_lignes[stoi(num_ligne)].getVoyages().end(); itr++)
+	{
+		for(auto itr2 = (*itr)->getArrets().begin(); itr2!=(*itr)->getArrets().end(); itr2++ )
 		{
-			for (map<std::string, Voyage>::iterator itr2 = m_voyages.begin(); itr2!=m_voyages.end(); itr2++)
+			if (itr2->getStationId() == station_id)
 			{
-				if (itr->second.getVoyageId() == itr2->second.getId())
+				if (pairRetour.first == "")
 				{
-					return m_lignes[itr2->second.getLigne()->getId()].getDestinations();
+					pairRetour.first = (*itr)->getDestination();
 				}
+				else if ((*itr)->getDestination() != pairRetour.first)
+				{
+					pairRetour.second = (*itr)->getDestination();
+				}
+
 			}
 		}
-	return pair<std::string, std::string> ("","");
+	}
+
+	return pairRetour;
 }
 
 std::vector<std::pair<double, Station*> > Gestionnaire::trouver_stations_environnantes(
@@ -172,8 +181,16 @@ std::vector<std::pair<double, Station*> > Gestionnaire::trouver_stations_environ
 std::vector<Heure> Gestionnaire::trouver_horaire(Date date, Heure heure,
 		std::string numero_ligne, int station_id, std::string destination) {
 	vector<Heure> vectHeure;
-	vector<Voyage*> vectVoy = m_lignes[stoi(numero_ligne)].getVoyages();
+	vector<Voyage*> vectVoyAll = m_lignes[stoi(numero_ligne)].getVoyages();
 	vector<Arret> vectArr;
+	vector<Voyage*> vectVoy;
+	for (auto itr = m_voyages_date.equal_range(date).first; itr != m_voyages_date.equal_range(date).second; itr++)
+	{
+		for (auto itr2 = vectVoyAll.begin(); itr2!=vectVoyAll.end(); itr2++)
+		{
+			if (itr->second->getId() == (*itr2)->getId()) vectVoy.push_back(*itr2);
+		}
+	}
 	for (vector<Voyage*>::iterator itr = vectVoy.begin(); itr!=vectVoy.end(); itr++)
 	{
 		if ((*itr)->getDestination() == destination)
@@ -181,7 +198,7 @@ std::vector<Heure> Gestionnaire::trouver_horaire(Date date, Heure heure,
 			vectArr = (*itr)->getArrets();
 			for (vector<Arret>::iterator itr2 = vectArr.begin(); itr2!=vectArr.end(); itr2++)
 			{
-				if (itr2->getHeureDepart()>heure)
+				if (itr2->getHeureDepart()>heure && itr2->getStationId() == station_id)
 				{
 					vectHeure.push_back(itr2->getHeureDepart());
 				}
