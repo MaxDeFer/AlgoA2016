@@ -238,7 +238,7 @@ int main(int argc, char **argv) {
 
 
 			cout<<"Initialisation du réseau ...."<<endl;
-			unGestionnaire.initialiser_reseau(uneDate, uneHeure, Heure(29,0,0),pointDepart, pointDarrivee);
+
 
 			vector<unsigned int> monChemin = unGestionnaire.plus_court_chemin(uneDate, uneHeure, pointDepart, pointDarrivee);
 			for (auto itr = monChemin.begin(); itr!=monChemin.end(); itr++)

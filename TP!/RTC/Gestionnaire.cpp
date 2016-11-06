@@ -218,7 +218,7 @@ void Gestionnaire::composantes_fortement_connexes(Date date, Heure heure_debut,
 
 std::vector<unsigned int> Gestionnaire::plus_court_chemin(Date date,
 		Heure heure_depart, Coordonnees depart, Coordonnees destination) {
-	this->initialiser_reseau(date, heure_depart, Heure(29,0,0), depart, destination);
+	this->initialiser_reseau(date, heure_depart, heure_depart.add_secondes(interval_planification_en_secondes), depart, destination);
 	vector<unsigned int> test123;
 	return test123;
 }
