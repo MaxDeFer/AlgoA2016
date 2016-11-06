@@ -10,7 +10,7 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 	for (vector<vector<string>>::iterator itr = resultats.begin(); itr != resultats.end(); itr++)
 	{
 		Ligne maLigne(*itr);
-		m_lignes[maLigne.getId()]=maLigne;
+		m_lignes.insert(pair<int,Ligne>(maLigne.getId(),maLigne));
 	}
 
 	lireFichier(chemin_dossier+"trips.txt",resultats, ',', 1 );
@@ -22,7 +22,7 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 			if (itr->second.getId() == stoi(resultats[i][0]))
 			{
 				Voyage monVoyage(resultats[i] ,&(m_lignes[stoi(resultats[i][0])]));
-				m_voyages[monVoyage.getId()]=monVoyage;
+				m_voyages.insert(pair<string,Voyage> (monVoyage.getId(),monVoyage));
 				itr->second.addVoyage(&m_voyages[monVoyage.getId()]);
 			}
 		}
@@ -33,7 +33,7 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 	for (auto itr = resultats.begin(); itr != resultats.end(); itr++)
 	{
 		Station maStation(*itr);
-		m_stations[maStation.getId()]=maStation;
+		m_stations.insert(pair<int,Station>(maStation.getId(),maStation));
 	}
 
 	lireFichier(chemin_dossier+"calendar_dates.txt",resultats, ',', 1 );
@@ -56,21 +56,17 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 
 	lireFichier(chemin_dossier+"stop_times.txt",resultats, ',', 1 );
 
-	for (unsigned int i = 0;i<resultats.size(); i++)
-	{
-		Arret monArret(resultats[i]);
-		m_arrets[monArret.getStationId()]=monArret;
-	}
+
 
 	vector<Arret> arretVoyage;
 	for (auto itr = m_voyages.begin(); itr!=m_voyages.end(); itr++)
 	{
-		for (auto itr2 = m_arrets.begin(); itr2!=m_arrets.end(); itr2++)
+		for (unsigned int i = 0;i<resultats.size(); i++)
 		{
-			if (itr->second.getId() == itr2->second.getVoyageId())
+			if (itr->second.getId() == resultats[i][0])
 			{
-						arretVoyage.push_back(itr2->second);
-						m_stations[itr2->second.getStationId()].addVoyage(&(itr->second)); //TEST
+						arretVoyage.push_back(Arret(resultats[i]));
+						m_stations[(stoi(resultats[i][3]))].addVoyage(&(itr->second)); //TEST
 			}
 
 
