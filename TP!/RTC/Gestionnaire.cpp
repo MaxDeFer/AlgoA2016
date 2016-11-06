@@ -224,7 +224,7 @@ std::vector<unsigned int> Gestionnaire::plus_court_chemin(Date date,
 void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 		Heure heure_fin, Coordonnees depart, Coordonnees dest,
 		double dist_de_marche, double dist_transfert) {
-	vector<string> v ={"0","", "", "","" };
+	vector<string> v ={"0","", "", "","" }; //Pour initialiser les stations de départ et d'arrivée
 	Station stationDepart(v);
 	stationDepart.setCoords(depart);
 	v[0] = "1";

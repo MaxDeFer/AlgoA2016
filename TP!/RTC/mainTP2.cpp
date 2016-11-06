@@ -23,18 +23,15 @@ using namespace std;
 int main(int argc, char **argv) {
 	cout<<"Bienvenue dans l'application RTC<<endl";
 	double chrono0 = clock();
-	Date uneDate;
-	Heure heureDepart;
-	Heure heureArrivee = heureDepart.add_secondes(5000);
-	Coordonnees depart(46.891,-71.271741);	//3041
-	Coordonnees arrivee(46.744664,-71.457378);	//6195
 	Gestionnaire unGestionnaire("/home/etudiant/Bureau/Algo/AlgoA2016/TP!/");
-	unGestionnaire.initialiser_reseau(uneDate, heureDepart, heureArrivee, depart, arrivee, 250, 100);
 	double chrono1=clock();
 	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000000<<" secondes"<<endl;
 
 	char reponseMenu[255];
 	char reponse[255];
+
+	Date uneDate;
+	Heure uneHeure;
 
 	time_t secondes;
 	tm *temps;
@@ -113,7 +110,7 @@ int main(int argc, char **argv) {
 			cin.getline(reponse,255);
 			if (strlen(reponse) != 0) jour = atoi(reponse);
 
-			Date uneDate(an, mois, jour);
+			uneDate = Date(an, mois, jour);
 
 			cout<<"Entrez l'heure de début de l'horaire!"<<endl
 					<<"heure [défaut="<<heure<<"] :";
@@ -128,7 +125,7 @@ int main(int argc, char **argv) {
 			cin.getline(reponse,255);
 			if (strlen(reponse) != 0) sec = atoi(reponse);
 
-			Heure uneHeure(heure, min, sec);
+			uneHeure = Heure(heure, min, sec);
 
 			cout<<"Entrez le numéro du bus: ";
 			cin.getline(reponse,255);
@@ -196,13 +193,112 @@ int main(int argc, char **argv) {
 			}
 			cout<<"Sélectionner une adresse en indiquant un chiffre:";
 			cin.getline(reponse,255);
-			Coordonnees pointDarrive(monCarnet[atoi(reponse)-1].second);
+			Coordonnees pointDarrivee(monCarnet[atoi(reponse)-1].second);
+
+			secondes = time(0);
+			temps = localtime(&secondes);
+
+			an = temps->tm_year+1900;
+			mois = temps->tm_mon+1;
+			jour = temps->tm_mday;
+			heure = temps->tm_hour;
+			min = temps->tm_min;
+			sec = temps->tm_sec;
+
+			cout<<"Entrez la date qui vous intéresse!"<<endl
+					<<"année [défaut="<<an<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) an = atoi(reponse);
+
+			cout<<"mois [défaut="<<mois<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) mois = atoi(reponse);
+
+			cout<<"jour [défaut="<<jour<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) jour = atoi(reponse);
+
+			uneDate = Date(an, mois, jour);
+
+			cout<<"Entrez l'heure de départ!"<<endl
+					<<"heure [défaut="<<heure<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) heure = atoi(reponse);
+
+			cout<<"minutes [défaut="<<min<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) min = atoi(reponse);
+
+			cout<<"secondes [défaut="<<sec<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) sec = atoi(reponse);
+
+			uneHeure = Heure(heure, min, sec);
+
+
+
+			cout<<"Initialisation du réseau ...."<<endl;
+			unGestionnaire.initialiser_reseau(uneDate, uneHeure, Heure(29,0,0),pointDepart, pointDarrivee);
+
+			vector<unsigned int> monChemin = unGestionnaire.plus_court_chemin(uneDate, uneHeure, pointDepart, pointDarrivee);
+			for (auto itr = monChemin.begin(); itr!=monChemin.end(); itr++)
+			{
+				Station maStationPlusCourt = unGestionnaire.getStation(*itr);
+				cout<<maStationPlusCourt.getId()<<" - "<<maStationPlusCourt.getDescription()<<endl;
+			}
+
 
 
 		}
 
 		else if (reponseMenu == "4")
 		{
+			secondes = time(0);
+			temps = localtime(&secondes);
+
+			an = temps->tm_year+1900;
+			mois = temps->tm_mon+1;
+			jour = temps->tm_mday;
+			heure = temps->tm_hour;
+			min = temps->tm_min;
+			sec = temps->tm_sec;
+
+			cout<<"Entrez la date qui vous intéresse!"<<endl
+					<<"année [défaut="<<an<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) an = atoi(reponse);
+
+			cout<<"mois [défaut="<<mois<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) mois = atoi(reponse);
+
+			cout<<"jour [défaut="<<jour<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) jour = atoi(reponse);
+
+			uneDate = Date(an, mois, jour);
+
+			cout<<"Entrez l'heure de début qui vous intéresse!"<<endl
+					<<"heure [défaut="<<heure<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) heure = atoi(reponse);
+
+			cout<<"minutes [défaut="<<min<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) min = atoi(reponse);
+
+			cout<<"secondes [défaut="<<sec<<"] :";
+			cin.getline(reponse,255);
+			if (strlen(reponse) != 0) sec = atoi(reponse);
+
+			uneHeure = Heure(heure, min, sec);
+
+			vector<string> maReponse = {"n'est pas fortement connexe", "est fortement connexe"};
+			bool estConnexeAvec = unGestionnaire.reseau_est_fortement_connexe(uneDate, uneHeure);
+			bool estConnexeSans = unGestionnaire.reseau_est_fortement_connexe(uneDate, uneHeure, false);
+			cout<<"Avec les arêtes de transfert, le réseau "<<maReponse[estConnexeAvec]<<endl;
+			cout<<"Sans les arêtes de transfert, le réseau "<<maReponse[estConnexeSans]<<endl;
+
 
 		}
 
