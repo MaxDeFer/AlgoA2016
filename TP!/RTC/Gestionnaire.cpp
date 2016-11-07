@@ -244,17 +244,30 @@ void Gestionnaire::composantes_fortement_connexes(Date date, Heure heure_debut,
 std::vector<unsigned int> Gestionnaire::plus_court_chemin(Date date,
 		Heure heure_depart, Coordonnees depart, Coordonnees destination) {
 	this->initialiser_reseau(date, heure_depart, heure_depart.add_secondes(interval_planification_en_secondes), depart, destination);
-	vector<unsigned int> test123;
-	return test123;
+
+	vector<unsigned int> cheminPlusCourt;
+	m_reseau.dijkstra(0, 1,cheminPlusCourt);
+	vector<unsigned int> inverse;
+	for(auto itr = cheminPlusCourt.end(); itr!=cheminPlusCourt.begin(); itr--)
+	{
+		inverse.push_back(*itr);
+	}
+
+	return inverse;
 }
 
 void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 		Heure heure_fin, Coordonnees depart, Coordonnees dest,
 		double dist_de_marche, double dist_transfert) {
-	vector<string> v ={"0","", "", "","" }; //Pour initialiser les stations de départ et d'arrivée
+	string latitude = to_string(depart.getLatitude());
+	string longitude = to_string(depart.getLongitude());
+	vector<string> v ={"0","", "", latitude,longitude }; //Pour initialiser les stations de départ et d'arrivée
 	Station stationDepart(v);
-	stationDepart.setCoords(depart);
 	v[0] = "1";
+	latitude = to_string(dest.getLatitude());
+	longitude = to_string(dest.getLongitude());
+	v[3] = latitude;
+	v[4] = longitude;
 	Station stationDest(v);
 	stationDest.setCoords(dest);
 	m_reseau.ajouterSommet(stationDepart.getId());
@@ -272,6 +285,8 @@ void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 		}
 	}
 
+	stationMarche.clear();
+
 	stationMarche = this->trouver_stations_environnantes(stationDest.getCoords(), dist_de_marche);
 	for (vector<pair<double, Station*>>::iterator itr = stationMarche.begin(); itr!=stationMarche.end(); itr++)
 	{
@@ -282,42 +297,68 @@ void Gestionnaire::initialiser_reseau(Date date, Heure heure_depart,
 		}
 	}
 
-	for (map<std::string, Voyage>::iterator itr = m_voyages.begin(); itr!= m_voyages.end(); itr++)
+	stationMarche.clear();
+
+	for (auto itr = m_voyages.begin(); itr!= m_voyages.end(); itr++)
 	{
 		for (auto dateItr = itrDate.first; dateItr!=itrDate.second; dateItr++)
 		{
 		if (dateItr->second->getId() == itr->second.getId())
 		{
 
-		for (vector<Arret>::iterator itr2= itr->second.getArrets().begin(); itr2 != itr->second.getArrets().end(); itr2++)
+		for (auto itr2= itr->second.getArrets().begin(); itr2 != itr->second.getArrets().end(); itr2++)
 		{
 			if(itr2->getHeureDepart()>heure_depart && itr2->getHeureDepart() < heure_fin)
 			{
+				cout<<"if externe"<<endl;
 				if (!(m_reseau.sommetExiste(itr2->getStationId())))
 				{
+					cout<<"Premier if dedans"<<endl;
 					m_reseau.ajouterSommet(itr2->getStationId());
-					stationMarche = this->trouver_stations_environnantes(m_stations.find(itr2->getStationId())->second.getCoords(), dist_transfert);
+					int x = itr2->getStationId();
+					cout<<m_reseau.sommetExiste(itr2->getStationId())<<endl;
+					cout<<itr2->getStationId()<<endl;
+					stationMarche = trouver_stations_environnantes(m_stations.find(x)->second.getCoords(), dist_transfert);
+					cout<<"avant for"<<endl;
+					cout<<itr2->getStationId()<<endl;
+					cout<<x<<endl;
 					for (auto itr3 = stationMarche.begin(); itr3!=stationMarche.end();itr3++)
 					{
+						cout<<m_reseau.sommetExiste(itr2->getStationId())<<endl;
+						cout<<"Jsuis dedans"<<endl;
 						m_reseau.ajouterSommet(itr3->second->getId());
+						cout<<"Milieu"<<endl;
+						cout<<m_reseau.sommetExiste(itr3->second->getId())<<endl<<m_reseau.sommetExiste(itr2->getStationId());
 						m_reseau.ajouterArc(itr2->getStationId(), itr3->second->getId(), itr3->first, 1);
+						cout<<"Maman?"<<endl;
 					}
+					stationMarche.clear();
 				}
-
-				if(!(m_reseau.arcExiste((itr2-1)->getStationId(), itr2->getStationId()))
-						&& itr2 != itr->second.getArrets().begin())
+				cout<<"new if"<<endl;
+				if (itr2 != itr->second.getArrets().begin())
 				{
+					cout<<"2e if"<<endl;
+				if(!(m_reseau.arcExiste((itr2-1)->getStationId(), itr2->getStationId())))
+				{
+					cout<<"Dedans le 2e if"<<endl;
 					int station1 = (itr2-1)->getStationId();
 					int station2 = itr2->getStationId();
 					m_reseau.ajouterArc(station1, station2, (m_stations.find(station2)->second.getCoords()- m_stations.find(station1)->second.getCoords()));
 				}
-				else if (itr2 != itr->second.getArrets().begin() && m_reseau.getTypeArc((itr2-1)->getStationId(), itr2->getStationId())==1)
+
+				else if (m_reseau.arcExiste((itr2-1)->getStationId(), itr2->getStationId()))
 				{
+					if(m_reseau.getTypeArc((itr2-1)->getStationId(), itr2->getStationId())==1)
+					{
+					cout<<"Else"<<endl;
+
+
 					int station1 = (itr2-1)->getStationId();
 					int station2 = itr2->getStationId();
 					m_reseau.enleverArc(station1, station2);
 					m_reseau.ajouterArc(station1, station2, (m_stations.find(station2)->second.getCoords()-m_stations.find(station1)->second.getCoords()),0);
-				}
+				}}
+			}
 			}
 		}}}
 		}
