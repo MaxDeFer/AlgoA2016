@@ -7,7 +7,7 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 
 	lireFichier(chemin_dossier+"routes.txt",resultats, ',', 1 );
 
-	for (vector<vector<string>>::iterator itr = resultats.begin(); itr != resultats.end(); itr++)
+	for (auto itr = resultats.begin(); itr != resultats.end(); itr++)
 	{
 		Ligne maLigne(*itr);
 		m_lignes.insert(pair<int,Ligne>(maLigne.getId(),maLigne));

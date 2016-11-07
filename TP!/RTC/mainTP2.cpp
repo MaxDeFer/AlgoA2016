@@ -23,12 +23,13 @@ using namespace std;
 int main(int argc, char **argv) {
 	cout<<"Bienvenue dans l'application RTC<<endl";
 	double chrono0 = clock();
-	Gestionnaire unGestionnaire("/home/etudiant/Bureau/Algo/AlgoA2016/TP!/");
+	Gestionnaire unGestionnaire("./");
 	double chrono1=clock();
 	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000000<<" secondes"<<endl;
 
-	char reponseMenu[255];
+	char reponseMenu[255] = "1";
 	char reponse[255];
+	string repM = "1";
 
 	Date uneDate;
 	Heure uneHeure;
@@ -42,7 +43,7 @@ int main(int argc, char **argv) {
 	int min;
 	int sec;
 
-	while (reponseMenu=="1" || reponseMenu=="2" || reponseMenu =="3" || reponseMenu=="4")
+	while (repM=="1" || repM=="2" || repM =="3" || repM=="4")
 	{
 		cout<<"Menu"<<endl
 				<<"1 - Stations à proximité"<<endl
@@ -51,7 +52,8 @@ int main(int argc, char **argv) {
 				<<"4 - Stats de connectivité"<<endl
 				<<"Sélectionner une option en indiquant un chiffre ou autre chose pour quitter:";
 		cin.getline(reponseMenu, 255);
-		if (reponseMenu == "1")
+		repM = reponseMenu;
+		if (repM == "1")
 		{
 			double latitude;
 			double longitude;
@@ -80,7 +82,7 @@ int main(int argc, char **argv) {
 			}
 		}
 
-		else if (reponseMenu == "2")
+		else if (repM == "2")
 		{
 			secondes = time(0);
 			temps = localtime(&secondes);
@@ -165,7 +167,7 @@ int main(int argc, char **argv) {
 			}
 		}
 
-		else if (reponseMenu == "3")
+		else if (repM == "3")
 		{
 
 			vector<pair<string, Coordonnees>> monCarnet = {{"3475 avenue maricourt, Québec", Coordonnees(46.760074,-71.319867)},
@@ -251,7 +253,7 @@ int main(int argc, char **argv) {
 
 		}
 
-		else if (reponseMenu == "4")
+		else if (repM == "4")
 		{
 			secondes = time(0);
 			temps = localtime(&secondes);

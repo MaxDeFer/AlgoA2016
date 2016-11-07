@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include <unordered_map>
+#include <vector>
+#include <stack>
+#include <map>
 #ifndef Reseau__H
 #define Reseau__H
 
@@ -22,7 +25,6 @@ typedef std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int> >
  * Les entre les sommets arcs sont tous identifiés par poids positif ou nul, et un type qui est aussi un entier positif.
  *
  */
-
 class Reseau
 {
 public:
@@ -50,10 +52,16 @@ public:
 	int bellmanFord(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin)
 				throw (std::logic_error);
 	bool estFortementConnexe() const;
-	int getComposantesFortementConnexes(std::vector<std::vector<unsigned int> > & composantes) const;
+	int getComposantesFortementConnexes(std::vector<std::vector<unsigned int>> & composantes) const;
+
 
 private:
-	/** À compléter */
+
+	std::unordered_map<unsigned int, liste_arcs> m_graphe;
+	void explore(unsigned int numOrigine, std::stack<unsigned int>& stack, std::map<unsigned int, bool>& visite) const;
+	Reseau inversion() const;
+
+
 
 };
 
