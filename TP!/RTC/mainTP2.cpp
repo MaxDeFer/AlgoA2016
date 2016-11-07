@@ -21,9 +21,9 @@
 using namespace std;
 
 int main(int argc, char **argv) {
-	cout<<"Bienvenue dans l'application RTC<<endl";
+	cout<<"Bienvenue dans l'application RTC"<<endl;
 	double chrono0 = clock();
-	Gestionnaire unGestionnaire("./");
+	Gestionnaire unGestionnaire("");
 	double chrono1=clock();
 	cout<<fixed<<setprecision(4)<<"Chargement des données terminé en "<<(chrono1 - chrono0)/1000000<<" secondes"<<endl;
 
@@ -65,11 +65,11 @@ int main(int argc, char **argv) {
 			cin.getline(reponse, 255);
 			latitude = atof(reponse);
 
-			cout<<endl<<"Longitude:";
+			cout<<"Longitude:";
 			cin.getline(reponse, 255);
 			longitude = atof(reponse);
 
-			cout<<endl<<"Entrez un rayon (en Km) pour la recherche:";
+			cout<<"Entrez un rayon (en Km) pour la recherche:";
 			cin.getline(reponse, 255);
 			rayon = atof(reponse);
 
@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
 			for(vector<pair<double, Station*>>::iterator itr = stationEnv.begin(); itr!=stationEnv.end(); itr++)
 			{
 				cout<<fixed<<setprecision(7)<<"À une distance de "<<itr->first<<"km:"<<endl;
-				cout<<itr->second->getId()<<" - "<<itr->second->getDescription();
+				cout<<itr->second->getId()<<" - "<<itr->second->getDescription()<<endl;
 			}
 		}
 

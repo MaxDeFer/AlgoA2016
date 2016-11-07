@@ -12,6 +12,7 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 		Ligne maLigne(*itr);
 		m_lignes.insert(pair<int,Ligne>(maLigne.getId(),maLigne));
 	}
+	resultats.clear();
 
 	lireFichier(chemin_dossier+"trips.txt",resultats, ',', 1 );
 
@@ -28,13 +29,17 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 		}
 	}
 
+	resultats.clear();
+
 	lireFichier(chemin_dossier+"stops.txt",resultats, ',', 1 );
 
-	for (auto itr = resultats.begin(); itr != resultats.end(); itr++)
+	for (auto itr = resultats.begin(); itr!=resultats.end(); itr++)
 	{
 		Station maStation(*itr);
 		m_stations.insert(pair<int,Station>(maStation.getId(),maStation));
 	}
+
+	resultats.clear();
 
 	lireFichier(chemin_dossier+"calendar_dates.txt",resultats, ',', 1 );
 
@@ -54,11 +59,31 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 
 	}
 
+	resultats.clear();
+
 	lireFichier(chemin_dossier+"stop_times.txt",resultats, ',', 1 );
 
+	multimap<string, Arret> mesArrets;
 
+	for (auto itr = resultats.begin(); itr!=resultats.end();itr++)
+	{
+		mesArrets.insert(pair<string, Arret>((*itr)[0], Arret(*itr)));
+	}
 
 	vector<Arret> arretVoyage;
+	for (auto itr = m_voyages.begin(); itr!=m_voyages.end();itr++)
+	{
+		pair<multimap<string, Arret>::iterator,multimap<string, Arret>::iterator> mesIterators =  mesArrets.equal_range(itr->first);
+		for (auto itr2 = mesIterators.first; itr2!=mesIterators.second; itr2++)
+		{
+			arretVoyage.push_back(itr2->second);
+		}
+		itr->second.setArrets(arretVoyage);
+		arretVoyage.clear();
+
+	}
+
+/*
 	for (auto itr = m_voyages.begin(); itr!=m_voyages.end(); itr++)
 	{
 		for (unsigned int i = 0;i<resultats.size(); i++)
@@ -76,7 +101,7 @@ Gestionnaire::Gestionnaire(std::string chemin_dossier) {
 		arretVoyage.clear();
 
 	}
-
+*/
 }
 
 bool Gestionnaire::date_est_prise_en_charge(const Date& date) {
