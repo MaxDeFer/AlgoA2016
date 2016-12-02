@@ -3,17 +3,10 @@
 //
 
 #include <iostream>
-#include <stdexcept>
-#include <string>
+#include <unordered_map>
 #include <vector>
 #include <stack>
-#include <queue>
-#include <new>
-#include <limits>
-#include <algorithm>
-#include "Station.h"
-#include <unordered_map>
-#include <unordered_set>
+#include <map>
 #ifndef Reseau__H
 #define Reseau__H
 
@@ -56,20 +49,19 @@ public:
 
 	int dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin)
 				throw (std::logic_error);
-	int meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin)
-				throw (std::logic_error);
 	int bellmanFord(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin)
 				throw (std::logic_error);
+	bool estFortementConnexe() const;
+	int getComposantesFortementConnexes(std::vector<std::vector<unsigned int>> & composantes) const;
+
 
 private:
-	/**< Le nombre de sommets dans le Reseau */
-	int nbSommets;
 
-	/**< Le nombre d'arcs dans le Reseau */
-	int nbArcs;
+	std::unordered_map<unsigned int, liste_arcs> m_graphe;
+	void explore(unsigned int numOrigine, std::stack<unsigned int>& stack, std::map<unsigned int, bool>& visite) const;
+	Reseau inversion() const;
 
-    /** Ce vector agira comme une table de hachage contenant les arcs d'un sommet avec son numero associé */
-	std::unordered_map<unsigned int, liste_arcs > m_arcs;
+
 
 };
 

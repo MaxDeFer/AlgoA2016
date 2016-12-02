@@ -1,3 +1,3 @@
-Coordonnees.o: ../Coordonnees.cpp ../Coordonnees.h
+Coordonnees.d: ../Coordonnees.cpp ../Coordonnees.h
 
 ../Coordonnees.h:

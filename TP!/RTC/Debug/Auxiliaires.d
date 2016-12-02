@@ -1,3 +1,3 @@
-Auxiliaires.o: ../Auxiliaires.cpp ../Auxiliaires.h
+Auxiliaires.d: ../Auxiliaires.cpp ../Auxiliaires.h
 
 ../Auxiliaires.h:

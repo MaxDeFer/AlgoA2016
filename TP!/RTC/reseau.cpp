@@ -1,319 +1,297 @@
 #include "reseau.h"
-#include <vector>
-#include <list>
-#include <map>
-#include <stack>
-
-Reseau::Reseau() {
-
-}
-
-void Reseau::ajouterSommet(unsigned int numero) throw (std::logic_error) {
-	liste_arcs arcsVides;
-	m_graphe.insert(std::pair<unsigned int, liste_arcs>(numero, arcsVides));
-}
-
-void Reseau::enleverSommet(unsigned int numero) throw (std::logic_error) {
-	m_graphe.erase(numero);
-}
-
-void Reseau::ajouterArc(unsigned int numOrigine, unsigned int numDest,
-		unsigned int cout, unsigned int type) throw (std::logic_error) {
-	std::pair<unsigned int, unsigned int> tmp(cout, type);
-	m_graphe.at(numOrigine).insert(
-			std::pair<unsigned int, std::pair<unsigned int, unsigned int>>(
-					numDest, tmp));
-
-}
-
-void Reseau::enleverArc(unsigned int numOrigine, unsigned int numDest)
-		throw (std::logic_error) {
-	m_graphe.at(numOrigine).erase(numDest);
-}
-
-void Reseau::majCoutArc(unsigned int numOrigine, unsigned int numDest,
-		unsigned int cout) throw (std::logic_error) {
-	m_graphe.at(numOrigine).at(numDest).first = cout;
-}
-
-int Reseau::nombreSommets() const {
-	return m_graphe.size();
-}
-
-int Reseau::nombreArcs() const {
-	int total = 0;
-	for (std::pair<unsigned int, liste_arcs> element : m_graphe) {
-		total += element.second.size();
-	}
-	return total;
-}
-
-bool Reseau::estVide() const {
-	if (m_graphe.size() == 0) {
-		return true;
-	} else {
-		return false;
-	}
-
-}
-
-bool Reseau::sommetExiste(unsigned int numero) const {
-	std::unordered_map<unsigned int, liste_arcs>::const_iterator got =
-			m_graphe.find(numero);
-	if (got == m_graphe.end()) {
-		return false;
-	} else {
-		return true;
-	}
-}
-
-bool Reseau::arcExiste(unsigned int numOrigine, unsigned int numDest) const
-		throw (std::logic_error) {
-
-	bool booltmp = false;
-	if (m_graphe.at(numOrigine).count(numDest) > 0) {
-		booltmp = true;
-	}
-	return booltmp;
-}
-
-int Reseau::getCoutArc(unsigned int numOrigine,
-		unsigned int numDestination) const throw (std::logic_error) {
-	return m_graphe.at(numOrigine).at(numDestination).first;
-}
-
-int Reseau::getTypeArc(unsigned int numOrigine,
-		unsigned int numDestination) const throw (std::logic_error) {
-	return m_graphe.at(numOrigine).at(numDestination).second;
-}
-
-int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest,
-		std::vector<unsigned int>& chemin) throw (std::logic_error) {
-
-	std::map<unsigned int, std::pair<unsigned int, unsigned int>> sommetsNonSol;
-	std::map<unsigned int, std::pair<unsigned int, unsigned int>> sommetsSol;
-
-	int u;
-
-	// On initialise a Infini les poids et 0 les predecesseurs
-	for (std::pair<unsigned int, liste_arcs> element : m_graphe) {
-		std::pair<unsigned int, unsigned int> tmp(INFINI, 0);
-		sommetsNonSol.insert(
-				std::pair<unsigned int, std::pair<unsigned int, unsigned int>>(
-						element.first, tmp));
-
-	}
-
-	sommetsNonSol.at(numOrigine).first = 0;
-	sommetsNonSol.at(numOrigine).second = numOrigine;
-
-	//On boucle autant de fois que le nombre de sommets
-	for (int i = 0; i < this->nombreSommets(); i++) {
-		unsigned int petite = INFINI;
-		//std::cout << sommetsNonSol.size();
-		//Pour toute les valeurs non solutionnees on cherche la valeur la plus petite
-		//Pour toute les noeuds non solutionnees on regarde si leur poid est plus petit que petite = INFINI
-		//Si oui, on remplace petite par la valeur du noeud
-		for (auto g = sommetsNonSol.begin(); g != sommetsNonSol.end(); g++) {
-			if (g->second.first < petite) {
-				petite = g->second.first;
-				u = g->first;
-
-			}
-		}
-		sommetsSol[u] = sommetsNonSol[u];
-		sommetsNonSol.erase(u);
-		unsigned int tmp = INFINI;
-
-		for (auto element = sommetsNonSol.begin();
-				element != sommetsNonSol.end(); element++) {
-
-			if (this->arcExiste(u, element->first)) {
-
-				tmp = petite + getCoutArc(u, element->first);
-
-				if (tmp < element->second.first) {
-
-					element->second.first = tmp;
-					element->second.second = u;
-				}
-			}
-		}
-
-	}
-	unsigned int trail = numDest;
-	while (trail != numOrigine) {
-		chemin.push_back(trail);
-		trail = sommetsSol[trail].second;
-	}
-	chemin.push_back(numOrigine);
-	return sommetsSol.at(numDest).first;
-}
-
-int Reseau::bellmanFord(unsigned int numOrigine, unsigned int numDest,
-		std::vector<unsigned int>& chemin) throw (std::logic_error) {
-	std::map<unsigned int, std::pair<unsigned int, unsigned int>> sommets;
-	std::map<std::pair<unsigned int, unsigned int>, unsigned int> edges;
 
 
-	// On initialise a Infini les poids et 0 les predecesseurs
-	for (std::pair<unsigned int, liste_arcs> noeud : m_graphe) {
-		std::pair<unsigned int, unsigned int> tmp(INFINI, 0);
-		sommets.insert(
-				std::pair<unsigned int, std::pair<unsigned int, unsigned int>>(
-						noeud.first, tmp));
-		for (std::pair<unsigned int, std::pair<unsigned int, unsigned int>> adjacents : noeud.second) {
-			std::pair<unsigned int, unsigned int> tmpPair(noeud.first,
-					adjacents.first);
-			edges.insert(
-					std::pair<std::pair<unsigned int, unsigned int>,
-							unsigned int>(tmpPair, adjacents.second.first));
-		}
-	}
-	sommets.at(numOrigine).first = 0;
-	sommets.at(numOrigine).second = numDest;
-	for (unsigned int i = 1; i < sommets.size(); i++) {
-
-		for (std::pair<std::pair<unsigned int, unsigned int>, unsigned int> arcs : edges) {
-
-			unsigned int tmp = sommets.at(arcs.first.first).first
-					+ this->getCoutArc(arcs.first.first, arcs.first.second);
-			if (tmp < sommets.at(arcs.first.second).first) {
-				sommets.at(arcs.first.second).first = tmp;
-				sommets.at(arcs.first.second).second = arcs.first.first;
-
-			}
-		}
-	}
-	for (std::pair<std::pair<unsigned int, unsigned int>, unsigned int> arcs : edges) {
-		if (sommets.at(arcs.first.second).first
-				> sommets.at(arcs.first.first).first
-						+ this->getCoutArc(arcs.first.first,
-								arcs.first.second)) {
-			throw std::logic_error("Cycle negatif");
-		}
-	}
-	unsigned int trail = numDest;
-	while (trail != numOrigine) {
-		chemin.push_back(trail);
-		trail = sommets[trail].second;
-	}
-	chemin.push_back(numOrigine);
-
-	return sommets.at(numDest).first;
-
-}
-
-bool Reseau::estFortementConnexe() const {
-	bool booltmp = false;
-	std::vector<std::vector<unsigned int>> tmpVect;
-	if (this->getComposantesFortementConnexes(tmpVect) == 1){
-		booltmp = true;
-	}
-	return booltmp;
-}
-
-int Reseau::getComposantesFortementConnexes(
-		std::vector<std::vector<unsigned int>>& composantes) const {
-	std::stack<unsigned int> mainStack;
-	std::stack<unsigned int> tmpStack;
-	std::map<unsigned int,bool> mainVisite;
-	std::map<unsigned int, unsigned int> nonVisites;
-	Reseau inverse;
-	for (std::pair<unsigned int, liste_arcs> element : m_graphe) {
-		nonVisites.insert(std::pair<unsigned int, unsigned int>(element.first,element.first));
-
-	}
-	while(!nonVisites.empty()){
-		//std::cout<< nonVisites.begin()->first << std::endl;
-		explore(nonVisites.begin()->first, mainStack, mainVisite);
-		tmpStack = mainStack;
-		while(!tmpStack.empty()){
-			nonVisites.erase(tmpStack.top());
-			tmpStack.pop();
-		}}
-
-	inverse = this->inversion();
-	//On réutilise réinitialise mainVisite
-	mainVisite.clear();
-	for (std::pair<unsigned int, liste_arcs> element : m_graphe) {
-			mainVisite.insert(std::pair<unsigned int, unsigned int>(element.first,false));
-		}
-
-	while(!mainStack.empty()){
-		if (mainVisite.at(mainStack.top())==true){
-			mainStack.pop();
-
-		}
-		else{
-			std::vector<unsigned int> vecInVec;
-			explore(mainStack.top(), tmpStack, mainVisite);
-			int stackSize = tmpStack.size();
-			for (int i = 0; i<stackSize; i++){
-				vecInVec.push_back(tmpStack.top());
-				std:: cout << vecInVec.size();
-				tmpStack.pop();
-
-			}
-			mainStack.pop();
-			composantes.push_back(vecInVec);
-			vecInVec.clear();
-
-
-		}
-	}
-
-
-
-	return composantes.size();
-}
-
-void Reseau::explore(unsigned int numOrigine, std::stack<unsigned int>& stack, std::map<unsigned int,bool>& visite) const {
-
-	std::map<unsigned int, int> debut;
-	std::map<unsigned int, int> fin;
-
-	int clock = 0;
-	for (std::pair<unsigned int, liste_arcs> noeud : m_graphe) {
-		visite.insert(std::pair<unsigned int, bool>(noeud.first, false));
-		debut.insert(std::pair<unsigned int, int>(noeud.first, 0));
-		fin.insert(std::pair<unsigned int, int>(noeud.first, 0));
-	}
-
-	visite.at(numOrigine) = true;
-	debut.at(numOrigine) = clock;
-	clock += 1;
-	for (std::pair<unsigned int, std::pair<unsigned int, unsigned int>> adjacents : m_graphe.at(
-			numOrigine)) {
-		if (visite.at(adjacents.first) == false) {
-			this->explore(adjacents.first, stack, visite);
-
-		}
-	}
-	fin.at(numOrigine) = clock;
-	clock += 1;
-	stack.push(numOrigine);
-
-
-}
-
-Reseau Reseau::inversion() const{
-	Reseau reseauInverse;
-	for (std::pair<unsigned int, liste_arcs> noeud : m_graphe){
-		reseauInverse.ajouterSommet(noeud.first);
-	}
-	for (std::pair<unsigned int, liste_arcs> noeud : m_graphe){
-		for (std::pair< unsigned int,std::pair<unsigned int,unsigned int>> arcs : m_graphe.at(noeud.first)){
-			reseauInverse.ajouterArc(arcs.first, noeud.first, arcs.second.first, arcs.second.second);
-		}
-	}
-	return reseauInverse;
-}
-
-/*
- * reseau.cpp
+/*!
+ * \brief constructeur par défaut d'un réseau. Crée un réseau vide.
  *
- *  Created on: 2016-11-03
- *      Author: etudiant
  */
+Reseau::Reseau(): nbSommets(0), nbArcs(0) {}
 
+
+/*!
+ * \brief Trouver le nombre de sommet dans le graphe en O(1)
+ * \return nombre de sommet du graphe
+ */
+int Reseau::nombreSommets() const
+{
+    return nbSommets;
+}
+
+/*!
+ * \brief Trouver le nombre d'arcs dans le graphe en O(1)
+ * \return nombre d'arcs du graphe
+ */
+int Reseau::nombreArcs() const
+{
+	return nbArcs;
+}
+
+/*!
+ * \brief Déterminer si le graphe est vide ou pas en O(1)
+ * \return True ssi le graphe est vide
+ */
+bool Reseau::estVide() const
+{
+    return nbSommets == 0;
+}
+
+/*!
+ * \brief Permet de déterminer si un sommet existe ou pas
+ * \param[in] numero: numéro du sommet à valider
+ * \return true ssi le sommet existe
+ */
+bool Reseau::sommetExiste(unsigned int numero) const
+{
+    return m_arcs.count(numero) != 0;
+}
+
+/*!
+ * \brief Permet de déterminer si un arc existe ou pas
+ * \param[in] numOrigine: numéro du sommet où l'arc part
+ * \param[in] numDest: numéro du sommet où l'arc arrive
+ * \exception logic_error si un des deux sommet n'existe pas
+ * \return true ssi l'arc existe
+ */
+bool Reseau::arcExiste(unsigned int numOrigine, unsigned int numDest) const throw (std::logic_error)
+{
+    if (!(sommetExiste(numOrigine) && sommetExiste(numDest)))
+    	throw std::logic_error ("arcExiste: Un des sommets n'existe pas!");
+    return m_arcs.find(numOrigine)->second.count(numDest) != 0;
+}
+
+/*!
+ * \brief Permet d'ajouter un sommet dans le réseau
+ * \param[in] p_numero: numéro du sommet à ajouter
+ * \exception logic_error si un sommet ayant le même numéro est déjà présent
+ * \post le graphe contient un sommet de plus
+ */
+void Reseau::ajouterSommet(unsigned int p_numero) throw (std::logic_error)
+{
+    if (sommetExiste(p_numero)) throw std::logic_error("ajouterSommet: Un sommet avec le numero existe!") ;
+    m_arcs[p_numero] = liste_arcs();
+    nbSommets++;
+}
+
+/*!
+ * \brief Permet d'ajouter un arc au réseau
+ * \param[in] numOrigine: numéro du sommet destiné à émettre l'arc
+ * \param[in] numDest: numéro du sommet destiné à recevoir l'arc
+ * \param[in] cout: le coût ou poids de l'arc à ajouter
+ * \param[in] type: type de l'arc à ajouter
+ * \exception logic_error si un des sommets n'existe pas
+ * \exception logic_error si l'arc est déjà présent
+ * \post le graphe contient un arc de plus entre l'origine et la destination
+ */
+void Reseau::ajouterArc(unsigned int numOrigine, unsigned int numDest, unsigned int cout, unsigned int type)
+throw(std::logic_error)
+{
+    if ( arcExiste(numOrigine, numDest) ) throw std::logic_error ("ajouterArc: arc déja existant");
+    m_arcs[numOrigine].insert({numDest, {cout, type} });
+    nbArcs++;
+}
+
+/*!
+ * \brief Permet d'enlever un sommet dans du réseau, ainsi que tous ces arcs entrants et sortants.
+ * \param[in] numero: numéro du sommet à enlever
+ * \exception logic_error si aucun sommet ayant le même numéro est déjà présent
+ * \post le graphe contient un sommet de moins et peut être plusieurs arcs de moins.
+ */
+void Reseau::enleverSommet(unsigned int numero) throw (std::logic_error)
+{
+    if (!sommetExiste(numero)) throw std::logic_error("enleverSommet: le sommet n'existe pas");
+    unsigned int origine;
+
+    for(auto kv: m_arcs){
+    	origine = kv.first;
+        if(arcExiste(origine, numero)){enleverArc(origine, numero);}
+    }
+    m_arcs.erase(numero);
+    nbSommets --;
+}
+
+/*!
+ * \brief Enlever un arc du réseau
+ * \param[in] numOrigine: numéro du sommet supposé émettre l'arc
+ * \param[in] numDest: numéro du sommet supposé recevoir l'arc
+ * \exception logic_error si un des sommets n'existe pas
+ * \exception logic_error si l'arc n'est pas présent dans le graphe
+ * \post le graphe contient un arc de moins
+ */
+void Reseau::enleverArc(unsigned int numOrigine, unsigned int numDest) throw (std::logic_error)
+{
+    if (!arcExiste(numOrigine, numDest)) throw std::logic_error ("enleverArc: arc non existant");
+    m_arcs[numOrigine].erase(numDest);
+    nbArcs--;
+}
+
+/*!
+ * \brief Permet de mettre à jour le coût d'un arc du réseau
+ * \param[in] numOrigine: numéro du sommet destiné à émettre l'arc
+ * \param[in] numDest: numéro du sommet destiné à recevoir l'arc
+ * \param[in] cout: le nouveau coût ou poids de l'arc à mettre à jour
+ * \exception logic_error si un des sommets n'existe pas
+ * \exception logic_error si l'arc n'est pas déjà présent
+ * \post le poids de l'arc a été mis à jour
+ */
+void Reseau::majCoutArc(unsigned int numOrigine, unsigned int numDest, unsigned int cout) throw (std::logic_error)
+{
+	if (!arcExiste(numOrigine, numDest)) throw std::logic_error ("majCoutArc: arc non existant");
+    m_arcs[numOrigine][numDest].first = cout;
+}
+
+/*!
+ * \brief Trouver le coût d'un arc du réseau
+ * \param[in] numOrigine: numéro du sommet supposé émettre l'arc
+ * \param[in] numDest: numéro du sommet supposé recevoir l'arc
+ * \exception logic_error si un des sommets n'existe pas
+ * \exception logic_error si l'arc n'est pas présent dans le graphe
+ * \return le cout de l'arc
+ */
+int Reseau::getCoutArc(unsigned int numOrigine, unsigned int numDest) const throw (std::logic_error){
+	if (!arcExiste(numOrigine, numDest) ) throw std::logic_error ("getCoutArc: arc non existant");
+    return m_arcs.find(numOrigine)->second.find(numDest)->second.first;
+}
+
+/*!
+ * \brief Trouver le type d'un arc du réseau
+ * \param[in] numOrigine: numéro du sommet supposé émettre l'arc
+ * \param[in] numDest: numéro du sommet supposé recevoir l'arc
+ * \exception logic_error si un des sommets n'existe pas
+ * \exception logic_error si l'arc n'est pas présent dans le graphe
+ * \return le type de l'arc
+ */
+int Reseau::getTypeArc(unsigned int numOrigine, unsigned int numDest) const throw (std::logic_error){
+	if (!arcExiste(numOrigine, numDest) ) throw std::logic_error ("getTypeArc: arc non existant");
+    return m_arcs.find(numOrigine)->second.find(numDest)->second.second;
+}
+
+/*!
+ * \brief Algorithme de Dijkstra en O(n*n)  permettant de trouver le plus court chemin entre deux noeuds du graphe
+ * \param[in] numOrigine: le sommet d'où le chemin part
+ * \param[in] numDest: le sommet que le chemin est censé atteindre
+ * \param[out] chemin:  le vecteur contenant le chemin trouvé s'il y en existe un
+ * \exception logic_error si un des sommets n'existe pas
+ * \return la longueur du chemin (= numeric_limits<int>::max() si p_destination n'est pas atteignable)
+ */
+int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
+{
+    if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
+    std::unordered_map<unsigned int, int> distances;
+    std::unordered_map<unsigned int, int> predecesseurs;
+    std::unordered_set<unsigned int> Q;
+    unsigned int max_poids = std::numeric_limits<int>::max();
+    unsigned int noeud_min;
+    int temp;
+
+    for(auto kv: m_arcs){
+    	distances[kv.first] = max_poids;
+    	predecesseurs[kv.first] = -1;
+    	Q.insert(kv.first);
+    }
+
+    distances[numOrigine] = 0;
+    for(int i = 0; i < nbSommets; i++){
+    	noeud_min = *(Q.begin());
+    	for(auto noeud: Q){
+    		if(distances[noeud] < distances[noeud_min]){
+    			noeud_min = noeud;
+    		}
+    	}
+    	Q.erase(noeud_min);
+    	if(noeud_min == numDest){
+    		break;
+    	}
+
+    	for(auto voisin: m_arcs[noeud_min]){
+    		if(Q.count(voisin.first) != 0){
+    			temp = voisin.second.first + distances[noeud_min];
+    			if(temp < distances[voisin.first]) {
+    				distances[voisin.first] = temp;
+    				predecesseurs[voisin.first] = noeud_min;
+    			}
+    		}
+    	}
+    }
+
+    chemin.clear();
+    if(predecesseurs[numDest] != -1){
+    	std::vector<unsigned int> chemin_inverse;
+		int courant = numDest;
+		while(courant!=-1){
+			chemin_inverse.push_back(courant);
+			courant = predecesseurs[courant];
+		}
+		for(int i=chemin_inverse.size() -1; i >= 0; i--){
+			chemin.push_back(chemin_inverse[i]);
+		}
+    }
+    return distances[numDest];
+}
+
+/*!
+ * \brief Algorithme de Dijkstra en O(nlogn)  permettant de trouver le plus court chemin entre deux noeuds du graphe
+ * \param[in] numOrigine: le sommet d'où le chemin part
+ * \param[in] numDest: le sommet que le chemin est censé atteindre
+ * \param[out] chemin:  le vecteur contenant le chemin trouvé s'il y en existe un
+ * \exception logic_error si un des sommets n'existe pas
+ * \return la longueur du chemin (= numeric_limits<int>::max() si p_destination n'est pas atteignable)
+ */
+int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
+{
+    //TODO À completer
+	return 0;
+}
+
+/*!
+ * \brief Algorithme de BellmanFord en O(n*m)  permettant de trouver le plus court chemin entre deux noeuds du graphe
+ * \param[in] numOrigine: le sommet d'où le chemin part
+ * \param[in] numDest: le sommet que le chemin est censé atteindre
+ * \param[out] chemin:  le vecteur contenant le chemin trouvé s'il y en existe un
+ * \exception logic_error si un des sommets n'existe pas
+ * \return la longueur du chemin (= numeric_limits<int>::max() si p_destination n'est pas atteignable)
+ */
+int Reseau::bellmanFord(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
+{
+    if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("bellmanFord: Un des sommets n'existe pas!");
+    unsigned int noeud_courant;
+    int temp;
+    std::unordered_map<unsigned int, int> distances;
+    std::unordered_map<unsigned int, int> predecesseurs;
+    int max_poids = std::numeric_limits<int>::max();
+    for(auto kv: m_arcs){
+    	distances[kv.first] = max_poids;
+    	predecesseurs[kv.first] = -1;
+    }
+    bool estInstable = true;
+
+    distances[numOrigine] = 0;
+    for(int i = 1; (i <  nbSommets) && estInstable ; i++){
+    	estInstable = false;
+    	for(auto kv: m_arcs){
+    		noeud_courant = kv.first;
+    		if(distances[noeud_courant] < max_poids){
+				for(auto voisin: kv.second){
+					temp = voisin.second.first + distances[noeud_courant];
+					if(temp < distances[voisin.first] && temp >= 0) {
+						distances[voisin.first] = temp;
+						predecesseurs[voisin.first] = noeud_courant;
+						estInstable = true;
+					}
+				}
+    		}
+    	}
+    }
+    chemin.clear();
+    if(predecesseurs[numDest] != -1){
+    	std::vector<unsigned int> chemin_inverse;
+		int courant = numDest;
+		while(courant!=-1){
+			chemin_inverse.push_back(courant);
+			courant = predecesseurs[courant];
+		}
+		for(int i=chemin_inverse.size() -1; i >= 0; i--){
+			chemin.push_back(chemin_inverse[i]);
+		}
+    }
+    return distances[numDest];
+}
