@@ -8,9 +8,9 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include TP!/RTC/Release/subdir.mk
--include TP!/RTC/Debug/subdir.mk
 -include TP!/RTC/subdir.mk
+-include TP!/subdir.mk
+-include RTCTP3/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -46,7 +46,7 @@ all: AlgoA2016
 AlgoA2016: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++  -o "AlgoA2016" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L"/home/etudiant/Bureau/Algo/AlgoA2016" -o "AlgoA2016" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

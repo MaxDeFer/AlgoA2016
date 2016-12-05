@@ -43,7 +43,7 @@ all: RTCTP3
 RTCTP3: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L"/home/etudiant/AlgoA2016/RTCTP3" -o "RTCTP3" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L"/home/etudiant/Bureau/Algo/AlgoA2016/RTCTP3" -o "RTCTP3" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

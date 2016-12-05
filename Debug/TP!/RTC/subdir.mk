@@ -11,7 +11,8 @@ CPP_SRCS += \
 ../TP!/RTC/Ligne.cpp \
 ../TP!/RTC/Station.cpp \
 ../TP!/RTC/Voyage.cpp \
-../TP!/RTC/mainTP2.cpp \
+../TP!/RTC/investigation.cpp \
+../TP!/RTC/mainTP3.cpp \
 ../TP!/RTC/reseau.cpp 
 
 OBJS += \
@@ -22,7 +23,8 @@ OBJS += \
 ./TP!/RTC/Ligne.o \
 ./TP!/RTC/Station.o \
 ./TP!/RTC/Voyage.o \
-./TP!/RTC/mainTP2.o \
+./TP!/RTC/investigation.o \
+./TP!/RTC/mainTP3.o \
 ./TP!/RTC/reseau.o 
 
 CPP_DEPS += \
@@ -33,7 +35,8 @@ CPP_DEPS += \
 ./TP!/RTC/Ligne.d \
 ./TP!/RTC/Station.d \
 ./TP!/RTC/Voyage.d \
-./TP!/RTC/mainTP2.d \
+./TP!/RTC/investigation.d \
+./TP!/RTC/mainTP3.d \
 ./TP!/RTC/reseau.d 
 
 
@@ -41,7 +44,7 @@ CPP_DEPS += \
 TP!/RTC/%.o: ../TP!/RTC/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -std=c++1y -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	g++ -std=c++11 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

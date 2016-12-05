@@ -23,7 +23,7 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+RTCTP3 \
 TP!/RTC \
-TP!/RTC/Debug \
-TP!/RTC/Release \
+TP! \
 
