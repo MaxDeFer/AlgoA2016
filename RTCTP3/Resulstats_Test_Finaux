@@ -1,0 +1,72 @@
+Chargement des données terminé en 12.6697 secondes
+Initialisation du réseau ....
+Chargement des données terminé en 5.68322 secondes
+----------------Meilleur--------------------- 
+Temps moyen de meilleur 30582.1
+Temps moyen de meilleur 32995.7
+Temps moyen de meilleur 33143.9
+Temps moyen de meilleur 31338.8
+Temps moyen de meilleur 31185.3
+Temps moyen de meilleur 32360.6
+Temps moyen de meilleur 32210.8
+Temps moyen de meilleur 31360
+Temps moyen de meilleur 32038.2
+Temps moyen de meilleur 32437.4
+Temps moyen de meilleur 32264.5
+Temps moyen de meilleur 33491.9
+Temps moyen de meilleur 31724.2
+Temps moyen de meilleur 32670.8
+Temps moyen de meilleur 32340.2
+Temps moyen de meilleur 33344.9
+Temps moyen de meilleur 32677.6
+Temps moyen de meilleur 31861
+Temps moyen de meilleur 33715.1
+Temps moyen de meilleur 32837.8
+--------------------------------------------- 
+Moyenne des tests: 32329.1
+----------------Belleman--------------------- 
+Temps moyen de bellman 725979
+Temps moyen de bellman 733224
+Temps moyen de bellman 732242
+Temps moyen de bellman 724896
+Temps moyen de bellman 726739
+Temps moyen de bellman 730875
+Temps moyen de bellman 720475
+Temps moyen de bellman 729173
+Temps moyen de bellman 729592
+Temps moyen de bellman 717695
+Temps moyen de bellman 730652
+Temps moyen de bellman 733227
+Temps moyen de bellman 755278
+Temps moyen de bellman 755540
+Temps moyen de bellman 736323
+Temps moyen de bellman 744705
+Temps moyen de bellman 736697
+Temps moyen de bellman 740480
+Temps moyen de bellman 737416
+Temps moyen de bellman 734649
+--------------------------------------------- 
+Moyenne des tests: 733793
+----------------Dijsktra--------------------- 
+Temps moyen de Dijsktra 1.35832e+06
+Temps moyen de Dijsktra 1.32549e+06
+Temps moyen de Dijsktra 1.33947e+06
+Temps moyen de Dijsktra 1.34887e+06
+Temps moyen de Dijsktra 1.35449e+06
+Temps moyen de Dijsktra 1.37488e+06
+Temps moyen de Dijsktra 1.37809e+06
+Temps moyen de Dijsktra 1.35011e+06
+Temps moyen de Dijsktra 1.32781e+06
+Temps moyen de Dijsktra 1.31939e+06
+Temps moyen de Dijsktra 1.32378e+06
+Temps moyen de Dijsktra 1.33544e+06
+Temps moyen de Dijsktra 1.32723e+06
+Temps moyen de Dijsktra 1.34376e+06
+Temps moyen de Dijsktra 1.33201e+06
+Temps moyen de Dijsktra 1.3202e+06
+Temps moyen de Dijsktra 1.32336e+06
+Temps moyen de Dijsktra 1.33007e+06
+Temps moyen de Dijsktra 1.32357e+06
+Temps moyen de Dijsktra 1.33757e+06
+--------------------------------------------- 
+Moyenne des tests: 1.33869e+06

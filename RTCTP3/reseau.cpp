@@ -177,11 +177,12 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<
     if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
     std::unordered_map<unsigned int, int> distances;
     std::unordered_map<unsigned int, int> predecesseurs;
-    std::unordered_set<unsigned int> Q;
+    std::unordered_set<unsigned int> Q; //Doit devenir une heap
     unsigned int max_poids = std::numeric_limits<int>::max();
     unsigned int noeud_min;
     int temp;
 
+    //Initialisation
     for(auto kv: m_arcs){
     	distances[kv.first] = max_poids;
     	predecesseurs[kv.first] = -1;
@@ -237,8 +238,56 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<
  */
 int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
 {
-    //TODO À completer
-	return 0;
+	typedef std::pair<int, int> intPair;
+	int u, v, w;
+    if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
+
+    std::unordered_map<unsigned int, int> distances;
+    std::unordered_map<unsigned int, int> predecesseurs;
+    std::priority_queue<unsigned int> Q; //Doit devenir une heap
+    class prioritize{public: bool operator ()(std::pair<int, int>&p1 ,std::pair<int, int>&p2){return p1.second>p2.second;}};
+    std::priority_queue<intPair, std::vector<intPair> , prioritize> pq;
+    unsigned int max_poids = std::numeric_limits<int>::max();
+    unsigned int noeud_min;
+    int temp;
+
+    //Initialisation
+    for(auto kv: m_arcs){
+    	distances[kv.first] = max_poids;
+    	predecesseurs[kv.first] = -1;
+    }
+
+   distances[numOrigine]=0;
+   pq.push(std::make_pair(numOrigine, distances[numOrigine]));
+   while (!pq.empty()){
+	   u = pq.top().first;
+	   pq.pop();
+	   for(auto next: m_arcs[u]){
+		   v = next.first;
+		   w = next.second.first;
+
+		   if (distances[v]>distances[u]+w){
+			   distances[v] = distances[u]+w;
+			   pq.push(std::make_pair(v,distances[v]));
+			   predecesseurs[v] = u;
+		   }
+	   }
+   }
+
+
+    chemin.clear();
+    if(predecesseurs[numDest] != -1){
+    	std::vector<unsigned int> chemin_inverse;
+		int courant = numDest;
+		while(courant!=-1){
+			chemin_inverse.push_back(courant);
+			courant = predecesseurs[courant];
+		}
+		for(int i=chemin_inverse.size() -1; i >= 0; i--){
+			chemin.push_back(chemin_inverse[i]);
+		}
+    }
+    return distances[numDest];
 }
 
 /*!

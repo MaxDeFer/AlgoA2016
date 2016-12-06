@@ -37,8 +37,10 @@ public:
 	bool station_existe(int station_id);
 	std::vector< unsigned int > plus_court_chemin_dijsktra(unsigned int num_station_depart, unsigned int num_station_dest);
 	std::vector< unsigned int > plus_court_chemin_bellman(unsigned int num_station_depart, unsigned int num_station_dest);
+	std::vector< unsigned int > meilleur_plus_court_chemin(unsigned int num_station_depart, unsigned int num_station_dest);
 	double tester_n_paires_dijsktra(unsigned int nb_paires, unsigned int seed=42);
 	double tester_n_paires_bellman(unsigned int nb_paires, unsigned int seed=42);
+	double tester_n_paires_meilleur(unsigned int nb_paires, unsigned int seed=42);
 
 private:
 	std::unordered_map<std::string, Ligne> lignes;

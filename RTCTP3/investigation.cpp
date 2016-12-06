@@ -304,3 +304,53 @@ void GestionnaireInvestigation::ajouter_aretes_transfert(double dist_transfert)
 	}
 }
 
+std::vector<unsigned int> GestionnaireInvestigation::meilleur_plus_court_chemin(unsigned int num_station_depart, unsigned int num_station_dest)
+{
+	timeval tv1, tv2;
+
+	if (gettimeofday(&tv1, 0) != 0)
+			throw std::logic_error("gettimeofday() a échoué");
+
+	std::vector<unsigned int> chemin;
+	m_reseau.meilleurPlusCourtChemin(num_station_depart, num_station_dest, chemin);
+
+	if (gettimeofday(&tv2, 0) != 0)
+			throw std::logic_error("gettimeofday() a échoué");
+
+	std::cout << "la fonction s'est terminé en " << tempsExecution(tv1, tv2) << "microsecondes" << std::endl;
+	return chemin;}
+
+
+double GestionnaireInvestigation::tester_n_paires_meilleur(unsigned int nb_paires, unsigned int seed){
+	/* initialize random seed: */
+	srand (seed);
+	double total = 0;
+	unsigned int i =0;
+
+	std::vector<unsigned int > v;
+
+	for(auto st1: stations){
+		v.push_back(st1.first);
+	}
+
+
+	while(i < nb_paires){
+		timeval tv1, tv2;
+		int k = rand() % v.size();
+		int j = rand() % v.size();
+
+
+		if (gettimeofday(&tv1, 0) != 0)
+				throw std::logic_error("gettimeofday() a échoué");
+		std::vector<unsigned int> chemin;
+		m_reseau.meilleurPlusCourtChemin(v[j], v[k], chemin);
+
+		if (gettimeofday(&tv2, 0) != 0)
+				throw std::logic_error("gettimeofday() a échoué");
+		total = total + tempsExecution(tv1, tv2);
+		//std::cout << i << ": " << tempsExecution(tv1, tv2) << std::endl;
+		i++;
+	}
+	return total/(1.0*nb_paires);
+}
+
