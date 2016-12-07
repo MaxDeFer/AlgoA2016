@@ -177,7 +177,7 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<
     if ( !sommetExiste(numOrigine) || !sommetExiste(numDest) ) throw std::logic_error ("dijkstra: Un des sommets n'existe pas!");
     std::unordered_map<unsigned int, int> distances;
     std::unordered_map<unsigned int, int> predecesseurs;
-    std::unordered_set<unsigned int> Q; //Doit devenir une heap
+    std::unordered_set<unsigned int> Q;
     unsigned int max_poids = std::numeric_limits<int>::max();
     unsigned int noeud_min;
     int temp;
@@ -244,7 +244,7 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
 
     std::unordered_map<unsigned int, int> distances;
     std::unordered_map<unsigned int, int> predecesseurs;
-    std::priority_queue<unsigned int> Q; //Doit devenir une heap
+    std::priority_queue<unsigned int> Q;
     class prioritize{public: bool operator ()(std::pair<int, int>&p1 ,std::pair<int, int>&p2){return p1.second>p2.second;}};
     std::priority_queue<intPair, std::vector<intPair> , prioritize> pq;
     unsigned int max_poids = std::numeric_limits<int>::max();
